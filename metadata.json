@@ -1,0 +1,6 @@
+{
+  "name": "The Algorithm on Trial",
+  "description": "An immersive detective game that challenges you to uncover hidden truths behind AI ethics, algorithmic bias, and corporate accountability in a high-stakes investigation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

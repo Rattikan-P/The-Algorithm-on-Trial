@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default deny catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened validation primitives
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function isValidGameSession(data) {
+      return data.id is string && data.id.size() <= 128
+        && data.startedAt is number
+        && data.totalScore is number && data.totalScore >= 0 && data.totalScore <= 300
+        && data.rankLabel is string && data.rankLabel.size() <= 64
+        && data.evidenceCount is number && data.evidenceCount >= 0 && data.evidenceCount <= 20
+        && data.bonusCount is number && data.bonusCount >= 0 && data.bonusCount <= 10
+        && (!('completedAt' in data) || data.completedAt is number)
+        && (!('verdictFrame' in data) || (data.verdictFrame is string && data.verdictFrame.size() <= 10))
+        && (!('coherenceTier' in data) || (data.coherenceTier is string && data.coherenceTier.size() <= 32))
+        && (!('coherencePct' in data) || (data.coherencePct is number && data.coherencePct >= 0 && data.coherencePct <= 100))
+        && (!('totalDurationSeconds' in data) || (data.totalDurationSeconds is number && data.totalDurationSeconds >= 0))
+        && (!('pretestCompleted' in data) || data.pretestCompleted is bool)
+        && (!('posttestCompleted' in data) || data.posttestCompleted is bool)
+        && (!('userAgent' in data) || (data.userAgent is string && data.userAgent.size() <= 300));
+    }
+
+    // Participant session logs for the research study
+    match /game_sessions/{sessionId} {
+      // Direct document lookup allowed only for session owner checking
+      allow get: if isValidId(sessionId);
+
+      // List forbidden on client to protect participant privacy and prevent data scraping
+      allow list: if false;
+
+      // Allow creating and updating session telemetry
+      allow create: if isValidId(sessionId)
+                    && request.resource.data.id == sessionId
+                    && isValidGameSession(request.resource.data);
+
+      allow update: if isValidId(sessionId)
+                    && request.resource.data.id == sessionId
+                    && isValidGameSession(request.resource.data);
+
+      // Deletions are forbidden
+      allow delete: if false;
+    }
+  }
+}

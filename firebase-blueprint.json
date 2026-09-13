@@ -1,0 +1,93 @@
+{
+  "entities": {
+    "gameSession": {
+      "title": "GameSession",
+      "description": "Participant session data for the Algorithm on Trial research study",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique session identifier",
+          "maxLength": 128
+        },
+        "startedAt": {
+          "type": "number",
+          "description": "Session start timestamp (ms)"
+        },
+        "completedAt": {
+          "type": "number",
+          "description": "Session completion timestamp (ms)"
+        },
+        "totalScore": {
+          "type": "number",
+          "description": "Total investigation score (0-170)"
+        },
+        "rankLabel": {
+          "type": "string",
+          "description": "Detective rank title",
+          "maxLength": 64
+        },
+        "verdictFrame": {
+          "type": "string",
+          "description": "Frame key selected by user (a, b, c, d)",
+          "maxLength": 10
+        },
+        "coherenceTier": {
+          "type": "string",
+          "description": "Verdict coherence tier",
+          "maxLength": 32
+        },
+        "coherencePct": {
+          "type": "number",
+          "description": "Verdict coherence percentage"
+        },
+        "evidenceCount": {
+          "type": "number",
+          "description": "Number of unlocked evidences"
+        },
+        "bonusCount": {
+          "type": "number",
+          "description": "Number of unlocked secret bonuses"
+        },
+        "totalDurationSeconds": {
+          "type": "number",
+          "description": "Total active time in seconds"
+        },
+        "pretestCompleted": {
+          "type": "boolean",
+          "description": "Whether pre-test was completed"
+        },
+        "posttestCompleted": {
+          "type": "boolean",
+          "description": "Whether post-test was completed"
+        },
+        "userAgent": {
+          "type": "string",
+          "description": "Browser user agent info",
+          "maxLength": 300
+        },
+        "submittedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server submission timestamp"
+        }
+      },
+      "required": [
+        "id",
+        "startedAt",
+        "totalScore",
+        "rankLabel",
+        "evidenceCount",
+        "bonusCount"
+      ]
+    }
+  },
+  "firestore": {
+    "/game_sessions/{sessionId}": {
+      "schema": {
+        "$ref": "#/entities/gameSession"
+      },
+      "description": "Collection of participant game audit results for study evaluation"
+    }
+  }
+}
