@@ -322,11 +322,11 @@ export const FRAME_LABELS: Record<string, string> = {
 
 export const MARIA_REACTIONS = {
   complete:
-    '"I never wanted anyone fired. I just wanted things to work the way they are supposed to. A system that rejected my bakery in 2 seconds never saw my face. Today, at least someone was willing to open it up. Thank you for not looking away."',
+    '"At first, I didn’t think anyone could pierce through their corporate Black Box or listen to people like me. But your independent XAI audit report proved the truth. Thank you for not looking away, and for holding the system accountable."',
   narrow:
-    '"I still never got the loan. The bakery is closed now. If it was one person\'s fault, why can\'t you catch just one person? I don\'t need answers from you. I just want the people who did this to know: it was never a number on a screen. It was my shop."',
+    '"At first, I didn’t think anyone could pierce through their corporate Black Box or listen to people like me. But your independent XAI audit report proved the truth. Thank you for not looking away, and for holding the system accountable."',
   wrong:
-    '"I don\'t blame myself. If you think nobody did anything wrong, that is your right. But the bakery that closed — it is never opening again."',
+    '"At first, I didn’t think anyone could pierce through their corporate Black Box or listen to people like me. But your independent XAI audit report proved the truth. Thank you for not looking away, and for holding the system accountable."',
 };
 
 export const REAL_CASES = [
@@ -345,11 +345,14 @@ export const REAL_CASES = [
 ];
 
 export const REAL_CAUSES_SUMMARY = [
-  'The official explanations were ethical camouflage — none of them separate the applicants',
-  'A proxy variable (the Neighborhood Stability Index, derived from zip codes) was the real differentiator, hiding the discrimination',
-  'The training data was skewed (Group C at only ~20% representation) and the data team’s warnings were ignored',
-  'The VP ordered the audit bypassed to hit a fundraising deadline — a systemic failure, not one person or one line of code',
+  'The official corporate explanations served as ethical camouflage — none of them accounted for the actual rejections',
+  'A proxy variable (the Neighborhood Stability Index, derived from zip codes) was the true differentiator, concealing demographic bias',
+  'Historical training data exhibited severe skewness (Group C at only ~20% representation) with internal warnings systematically ignored',
+  'Executive leadership ordered fairness checks bypassed to hit fundraising deadlines — proving a systemic governance failure',
 ];
+
+export const REPORT_AUDIT_SALUTATION = 'To: Priya Vance, Senior Data Compliance Officer, FinTrust\nFrom: Independent External Audit Team\nSubject: Final Forensic Audit Report & Verdict Findings';
+
 
 export const MARIA_MESSAGES = MARIA_REACTIONS;
 export const REAL_WORLD_CASES = REAL_CASES;

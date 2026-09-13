@@ -180,13 +180,13 @@ const LobbyRoom: React.FC<{
           ) : (
             <div className="mt-4 rounded-md border border-amber-500/30 bg-amber-500/5 p-3">
               <p className="text-xs text-amber-200">
-                Taped discreetly under the reception counter is an executive access badge labeled "D. Aldridge" — Priya staged it here as promised in her dispatch.
+                To avoid CCTV surveillance and prevent anyone from noticing her collaborating with an external auditor, Priya left a secure dead-drop: an executive access badge labeled "D. Aldridge" tucked inside the reception logbook.
               </p>
               <button
                 type="button"
                 onClick={() => {
                   addItem('accessCard');
-                  addNote('Retrieved the VP access card staged by Priya under the lobby desk');
+                  addNote('Retrieved the VP access card via dead-drop staged by Priya to avoid CCTV detection');
                 }}
                 className="mt-2 rounded-md border border-amber-500/50 bg-amber-500/10 px-4 py-2 text-sm text-amber-200 hover:bg-amber-500/20"
               >

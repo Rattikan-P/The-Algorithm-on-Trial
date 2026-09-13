@@ -1,17 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  Mail,
-  TriangleAlert,
+  Terminal,
+  ShieldAlert,
   ArrowRight,
   ExternalLink,
-  ClipboardCheck,
   CheckCircle2,
   Lock,
-  Sparkles,
+  FileSearch,
+  Cpu,
+  BrainCircuit,
+  SearchCode,
+  MessageSquare
 } from 'lucide-react';
 import {
-  REJECTION_LETTER_TEXT,
   PRETEST_URL,
   CONSENT_NOTE,
 } from '../data/gameData';
@@ -19,6 +21,14 @@ import {
 interface NoticeStageProps {
   onBegin: () => void;
 }
+
+const DIALOGUE_LINES = [
+  { sender: 'system', text: 'SECURE ENCRYPTED CHANNEL INITIALIZED. ID: FINTRUST-EXT-902.' },
+  { sender: 'priya', text: 'External auditor? This is Priya Vance, Senior Data Compliance Officer at FinTrust.' },
+  { sender: 'priya', text: 'We have retained your firm under confidential directive to review our automated credit-scoring model.' },
+  { sender: 'priya', text: 'Internal operations have flagged anomalous rejection rates for fully qualified loan applicants. However, management insists the automated system is an impenetrable "Black Box" that cannot be audited.' },
+  { sender: 'priya', text: 'We require an independent technical audit utilizing Explainable AI (XAI) methodologies to examine the model parameters and verify its decision integrity.' },
+];
 
 export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
   const [pretestDone, setPretestDone] = useState<boolean>(() => {
@@ -28,9 +38,37 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
     return sessionStorage.getItem('pretest_opened') === 'true';
   });
   const [confirmedSubmitted, setConfirmedSubmitted] = useState<boolean>(false);
-  const [showPretestModal, setShowPretestModal] = useState<boolean>(() => {
-    return sessionStorage.getItem('pretest_completed') !== 'true';
-  });
+  const [showPretestModal, setShowPretestModal] = useState<boolean>(false);
+  
+  // Dialogue state
+  const [dialogueIndex, setDialogueIndex] = useState(0);
+  const [showDossier, setShowDossier] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-advance initial system message
+  useEffect(() => {
+    if (dialogueIndex === 0 && !showDossier) {
+      const timer = setTimeout(() => setDialogueIndex(1), 1200);
+      return () => clearTimeout(timer);
+    }
+  }, [dialogueIndex, showDossier]);
+
+  // Scroll to bottom of chat when dialogueIndex changes
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [dialogueIndex]);
+
+  const handleNextDialogue = () => {
+    if (dialogueIndex < DIALOGUE_LINES.length - 1) {
+      setDialogueIndex(prev => prev + 1);
+    } else {
+      setShowDossier(true);
+    }
+  };
+
+  const handleSkipDialogue = () => {
+    setShowDossier(true);
+  };
 
   const handleOpenPretest = () => {
     setHasOpenedForm(true);
@@ -53,283 +91,266 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
   };
 
   return (
-    <motion.div
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 px-4 py-10"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.6 }}
-    >
-      {/* Background radial glow */}
-      <div
-        className="pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full"
-        style={{
-          background: 'radial-gradient(circle, rgba(245,158,11,0.18) 0%, transparent 65%)',
-        }}
-      />
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden bg-slate-950 px-4 py-10 font-sans text-slate-100">
+      {/* Background ambient elements */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-20">
+        <div className="h-[500px] w-[500px] rounded-full bg-amber-500/10 blur-[100px]" />
+        <div className="absolute h-[300px] w-[300px] rounded-full bg-emerald-500/10 blur-[80px]" />
+      </div>
 
-      {/* Mandatory Pre-test Pop-up Modal */}
-      <AnimatePresence>
-        {showPretestModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-md">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 15 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 15 }}
-              transition={{ duration: 0.2, ease: 'easeOut' }}
-              className="relative w-full max-w-lg overflow-hidden rounded-xl border border-amber-500/40 bg-slate-900 shadow-[0_0_60px_rgba(245,158,11,0.3)]"
-            >
-              {/* Top accent bar */}
-              <div className="h-1.5 w-full bg-gradient-to-r from-amber-500 via-amber-300 to-amber-600" />
-
-              <div className="p-6 md:p-8">
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-amber-500/40 bg-amber-500/15 text-amber-300">
-                    <ClipboardCheck className="h-6 w-6" />
+      <AnimatePresence mode="wait">
+        {!showDossier ? (
+          <motion.div
+            key="dialogue"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="z-10 w-full max-w-2xl"
+          >
+            <div className="rounded-xl border border-slate-800 bg-slate-900/90 shadow-2xl backdrop-blur-md overflow-hidden">
+              {/* Chat Header */}
+              <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950/80 px-6 py-4">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400">
+                    <MessageSquare className="h-4 w-4" />
                   </div>
                   <div>
-                    <span className="inline-block rounded bg-amber-500/15 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-amber-300">
-                      Mandatory · Research Study
-                    </span>
-                    <h3 className="font-serif text-xl font-bold text-slate-100">
-                      Pre-Game Survey (Pre-Test)
-                    </h3>
+                    <h2 className="text-sm font-semibold text-slate-200">Secure Transmission</h2>
+                    <p className="text-[11px] text-slate-400 font-mono">Priya Vance • FinTrust Compliance</p>
                   </div>
                 </div>
+                <button 
+                  onClick={handleSkipDialogue}
+                  className="rounded px-2.5 py-1 text-xs font-mono text-slate-400 hover:text-amber-400 hover:bg-slate-800/60 transition cursor-pointer"
+                >
+                  [ SKIP INTRO ]
+                </button>
+              </div>
 
-                <div className="space-y-3 font-sans text-sm leading-relaxed text-slate-300">
-                  <p>
-                    This simulation is part of an AI ethics research study.{' '}
-                    <span className="font-semibold text-amber-200">
-                      Please complete this short 2–3 minute pre-test
-                    </span>{' '}
-                    before beginning the investigation so we can measure your starting knowledge.
-                  </p>
+              {/* Chat Messages Container with Fixed Height & Scroll */}
+              <div className="h-[340px] overflow-y-auto p-6 space-y-4 bg-slate-950/40">
+                <AnimatePresence>
+                  {DIALOGUE_LINES.slice(0, dialogueIndex + 1).map((line, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className={`flex gap-3 ${line.sender === 'system' ? 'justify-center my-2' : 'items-start'}`}
+                    >
+                      {line.sender === 'priya' && (
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-500/20 border border-amber-500/30 text-amber-400 font-mono text-xs font-bold shadow">
+                          PV
+                        </div>
+                      )}
+                      <div
+                        className={`rounded-xl px-4 py-3 text-sm leading-relaxed max-w-[80%] ${
+                          line.sender === 'system'
+                            ? 'bg-emerald-950/40 border border-emerald-900/60 text-emerald-300 font-mono text-xs text-center w-full py-2 shadow-inner'
+                            : 'bg-slate-800/80 border border-slate-700/60 text-slate-200 shadow-md'
+                        }`}
+                      >
+                        {line.text}
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+                <div ref={messagesEndRef} />
+              </div>
 
-                  <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3.5 text-xs text-slate-300">
-                    <div className="space-y-2">
-                      <p className="flex items-center gap-2 font-medium text-amber-200">
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/20 text-[11px] font-bold text-amber-300">
-                          1
-                        </span>
-                        <span>Click the button below to open the survey in a new tab.</span>
-                      </p>
-                      <p className="flex items-center gap-2 font-medium text-amber-200">
-                        <span className="flex h-5 w-5 items-center justify-center rounded-full bg-amber-500/20 text-[11px] font-bold text-amber-300">
-                          2
-                        </span>
-                        <span>Submit your responses, then return here and check the confirmation box.</span>
-                      </p>
-                    </div>
-                  </div>
+              {/* Chat Footer / Action Control */}
+              <div className="border-t border-slate-800 bg-slate-950/80 px-6 py-4 flex items-center justify-between">
+                <div className="text-xs font-mono text-slate-500">
+                  SECURE_SESSION // {dialogueIndex + 1} of {DIALOGUE_LINES.length}
                 </div>
-
-                {/* Step 1: Open form button */}
-                <div className="mt-5">
-                  <button
-                    type="button"
-                    onClick={handleOpenPretest}
-                    className="flex w-full items-center justify-center gap-2 rounded-lg bg-amber-500 px-5 py-3 text-sm font-semibold text-slate-950 shadow-[0_0_20px_rgba(245,158,11,0.35)] transition hover:bg-amber-400 hover:shadow-[0_0_30px_rgba(245,158,11,0.5)]"
+                {dialogueIndex > 0 && (
+                  <motion.button
+                    initial={{ opacity: 0, scale: 0.95 }} 
+                    animate={{ opacity: 1, scale: 1 }}
+                    onClick={handleNextDialogue}
+                    className="flex items-center gap-2 rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-400 shadow-lg shadow-amber-500/20 transition cursor-pointer"
                   >
-                    <span>{hasOpenedForm ? 'Open Survey Again' : 'Take the Pre-Test Survey'}</span>
-                    <ExternalLink className="h-4 w-4" />
-                  </button>
-                  {hasOpenedForm && (
-                    <p className="mt-1.5 text-center text-xs text-emerald-400">
-                      ✓ Form opened in a new tab
+                    {dialogueIndex === DIALOGUE_LINES.length - 1 ? 'OPEN BRIEFING DOSSIER' : 'NEXT'}
+                    <ArrowRight className="h-4 w-4" />
+                  </motion.button>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="dossier"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="z-10 w-full max-w-2xl"
+          >
+            <div className="rounded-xl border border-slate-800 bg-slate-900/90 shadow-2xl backdrop-blur-xl overflow-hidden font-sans">
+              {/* Header */}
+              <div className="bg-slate-950/50 px-6 py-5 border-b border-slate-800">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-amber-500 font-mono text-xs tracking-widest uppercase">Mission Briefing</span>
+                  <span className="text-slate-500 font-mono text-xs flex items-center gap-1">
+                    <ShieldAlert className="h-3 w-3 text-rose-500" />
+                    CONFIDENTIAL
+                  </span>
+                </div>
+                <h1 className="text-xl font-bold text-slate-100 font-sans">The Algorithm on Trial</h1>
+              </div>
+
+              {/* Body: Sectioned Content */}
+              <div className="p-6 space-y-5">
+                
+                {/* Section 1: The Incident */}
+                <section className="flex gap-3.5 items-start">
+                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-rose-500/10 border border-rose-500/20">
+                    <BrainCircuit className="h-4 w-4 text-rose-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-slate-200 mb-1">1. The Incident</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                      FinTrust's automated loan-approval system has begun rejecting qualified applicants unexpectedly. The exact internal mechanism behind these rejections remains unverified.
                     </p>
-                  )}
-                </div>
+                  </div>
+                </section>
 
-                {/* Step 2: Confirmation Checkbox (only activated after opening) */}
-                <div className="mt-5 rounded-lg border border-slate-700/80 bg-slate-950/60 p-3.5">
-                  <label className="flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-slate-300">
-                    <input
-                      type="checkbox"
-                      checked={confirmedSubmitted}
-                      onChange={(e) => setConfirmedSubmitted(e.target.checked)}
-                      disabled={!hasOpenedForm}
-                      className="mt-0.5 h-4 w-4 rounded border-slate-600 bg-slate-800 text-amber-500 focus:ring-amber-400 disabled:opacity-40"
-                    />
-                    <span className={hasOpenedForm ? 'text-slate-200' : 'text-slate-500'}>
-                      I have completed and submitted the Pre-test survey.
-                    </span>
-                  </label>
-                </div>
+                {/* Section 2: The Black Box */}
+                <section className="flex gap-3.5 items-start">
+                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-800 border border-slate-700">
+                    <Cpu className="h-4 w-4 text-slate-300" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-slate-200 mb-1">2. The Barrier: The "Black Box"</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                      Management maintains that the algorithm functions as an impenetrable <strong className="text-slate-200">"Black Box" (กล่องดำ)</strong>, claiming its complex inner workings cannot be audited or explained.
+                    </p>
+                  </div>
+                </section>
 
-                {/* Step 3: Unlock & Proceed button */}
-                <div className="mt-4">
-                  <button
-                    type="button"
-                    onClick={handleConfirmDone}
-                    disabled={!hasOpenedForm || !confirmedSubmitted}
-                    className={`flex w-full items-center justify-center gap-2 rounded-lg px-4 py-3 text-sm font-semibold transition ${
-                      hasOpenedForm && confirmedSubmitted
-                        ? 'border border-emerald-500/50 bg-emerald-600 text-white shadow-[0_0_20px_rgba(16,185,129,0.35)] hover:bg-emerald-500 cursor-pointer'
-                        : 'border border-slate-800 bg-slate-800/60 text-slate-500 cursor-not-allowed'
-                    }`}
-                  >
-                    {hasOpenedForm && confirmedSubmitted ? (
-                      <>
-                        <CheckCircle2 className="h-4 w-4 text-emerald-200" />
-                        <span>Confirm & Enter Investigation</span>
-                      </>
-                    ) : (
-                      <>
-                        <Lock className="h-4 w-4 text-slate-500" />
-                        <span>Complete survey & check box to unlock</span>
-                      </>
-                    )}
-                  </button>
-                </div>
+                {/* Section 3: Explainable AI (XAI) */}
+                <section className="flex gap-3.5 items-start">
+                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                    <SearchCode className="h-4 w-4 text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-emerald-400 mb-1">3. The Methodology: Explainable AI (XAI)</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                      As an independent auditor, you will apply <strong className="text-emerald-300">Explainable AI (XAI)</strong> principles to inspect feature importance, analyze model decisions, and pierce through the black box.
+                    </p>
+                  </div>
+                </section>
 
-                <p className="mt-4 text-center text-[10px] leading-snug text-slate-500">
+                {/* Section 4: The Objective */}
+                <section className="flex gap-3.5 items-start">
+                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-500/10 border border-amber-500/20">
+                    <FileSearch className="h-4 w-4 text-amber-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-semibold text-slate-200 mb-1">4. Your Objective</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                      Gather physical clues, examine audit reports, and uncover the true factors driving the algorithm's verdicts to determine whether the system operates fairly.
+                    </p>
+                  </div>
+                </section>
+
+              </div>
+
+              {/* Footer / Call to action */}
+              <div className="bg-slate-950/80 px-6 py-5 border-t border-slate-800 flex flex-col items-center">
+                <p className="mb-5 text-center text-xs text-slate-400 leading-normal">
                   {CONSENT_NOTE}
                 </p>
+                
+                <button
+                  onClick={handleStartGame}
+                  className="group relative flex w-full max-w-xs items-center justify-center gap-2 overflow-hidden rounded-md bg-amber-500 px-5 py-3 font-bold text-slate-950 transition-all hover:bg-amber-400 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer text-sm"
+                >
+                  <span className="relative z-10 uppercase tracking-wider">Accept Mission</span>
+                  <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </button>
+
+                <button
+                  onClick={() => {
+                    sessionStorage.clear();
+                    window.location.reload();
+                  }}
+                  className="mt-4 text-[10px] text-slate-600 hover:text-slate-400 underline transition cursor-pointer"
+                >
+                  Reset all data (Restart game / Clear Pre-test status)
+                </button>
               </div>
-            </motion.div>
-          </div>
+            </div>
+          </motion.div>
         )}
       </AnimatePresence>
 
-      <div className="relative z-10 w-full max-w-2xl">
-        <p className="mb-2 text-center font-mono text-xs uppercase tracking-[0.3em] text-amber-500/70">
-          FinTrust AI · Loan Application Outcome
-        </p>
-        <h1 className="mb-6 text-center font-serif text-4xl font-bold text-amber-100 md:text-5xl">
-          The Rejection Letter
-        </h1>
-
-        {/* Rejection letter card */}
-        <motion.div
-          className="relative mx-auto mb-6 max-w-lg rounded-lg border border-amber-500/30 bg-amber-50/[0.03] p-6 shadow-[0_0_30px_rgba(245,158,11,0.12)]"
-          initial={{ y: 16, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-        >
-          <div className="mb-3 flex items-center gap-2 border-b border-amber-500/20 pb-3">
-            <Mail className="h-4 w-4 text-amber-300" />
-            <span className="font-mono text-[11px] uppercase tracking-wider text-amber-300/80">
-              no-reply@fintrust.ai
-            </span>
-          </div>
-          <pre className="whitespace-pre-wrap font-serif text-sm leading-relaxed text-slate-200">
-            {REJECTION_LETTER_TEXT}
-          </pre>
-        </motion.div>
-
-        {/* Maria's account */}
-        <motion.div
-          className="mx-auto mb-4 max-w-lg rounded-md border border-slate-700 bg-slate-900/50 p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.35 }}
-        >
-          <p className="mb-1 font-mono text-[10px] uppercase tracking-widest text-slate-500">
-            — Maria's Account (Client)
-          </p>
-          <p className="font-serif text-sm italic leading-relaxed text-slate-300">
-            "Every one of my numbers was strong, but they turned me down without ever giving me a real reason... I am starting to wonder if it was ever about the numbers at all."
-          </p>
-        </motion.div>
-
-        {/* Whistleblower Intel */}
-        <motion.div
-          className="mx-auto mb-6 max-w-lg rounded-md border border-amber-500/30 bg-amber-500/5 p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.45 }}
-        >
-          <div className="mb-1 flex items-center justify-between">
-            <p className="font-mono text-[10px] uppercase tracking-widest text-amber-400">
-              — Encrypted Tip · Whistleblower Contact
-            </p>
-            <span className="font-mono text-[10px] text-amber-500/70">PRIYA M. · LEAD DATA SCIENTIST</span>
-          </div>
-          <p className="font-serif text-sm leading-relaxed text-slate-300">
-            "I built this system, and I watched management bypass our safety audits to close their $40M funding round. Maria was one of dozens flagged by a hidden proxy variable. I can't speak publicly under my NDA, but if you audit their official excuses, I will help you penetrate our systems tonight."
-          </p>
-        </motion.div>
-
-        {/* Investigator mandate alert */}
-        <motion.div
-          className="mx-auto mb-6 flex max-w-lg items-start gap-3 rounded-md border border-sky-500/30 bg-sky-500/5 p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.55 }}
-        >
-          <TriangleAlert className="mt-0.5 h-5 w-5 flex-shrink-0 text-sky-400" />
-          <p className="font-serif text-sm leading-relaxed text-slate-300">
-            <span className="font-semibold text-slate-100">Investigative Mandate:</span> FinTrust claims objective algorithmic neutrality. You will first audit their official mathematical defenses to expose the discrepancies, then coordinate with Priya's dead-drops to retrieve the suppressed data from corporate headquarters.
-          </p>
-        </motion.div>
-
-        {/* Pretest status indicator */}
-        <motion.div
-          className="mx-auto mb-6 max-w-lg text-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.55 }}
-        >
-          {pretestDone ? (
-            <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/10 px-4 py-1.5 text-xs font-medium text-emerald-300">
-              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
-              <span>Pre-test completed · Ready to investigate</span>
-            </div>
-          ) : (
-            <button
-              type="button"
-              onClick={() => setShowPretestModal(true)}
-              className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/15 px-4 py-1.5 text-xs font-medium text-amber-300 transition hover:bg-amber-500/25"
+      {/* Pretest Modal */}
+      <AnimatePresence>
+        {showPretestModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 15 }}
+              className="w-full max-w-md rounded-xl border border-slate-800 bg-slate-900 shadow-2xl overflow-hidden"
             >
-              <Lock className="h-3.5 w-3.5 text-amber-400" />
-              <span>Pre-test survey required · Click here to complete</span>
-            </button>
-          )}
-        </motion.div>
-
-        {/* CTA Button */}
-        <div className="text-center">
-          <motion.button
-            type="button"
-            onClick={handleStartGame}
-            className={`group inline-flex items-center gap-2 rounded-md px-8 py-3 font-sans text-sm font-semibold transition ${
-              pretestDone
-                ? 'border border-amber-500/50 bg-amber-500/10 text-amber-200 hover:bg-amber-500/20 hover:shadow-[0_0_25px_rgba(245,158,11,0.3)] cursor-pointer'
-                : 'border border-slate-700 bg-slate-800/60 text-slate-400 hover:border-amber-500/40 hover:text-amber-300 cursor-pointer'
-            }`}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {pretestDone ? (
-              <>
-                <span>Demand an Explanation from FinTrust</span>
-                <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-              </>
-            ) : (
-              <>
-                <Lock className="h-4 w-4 text-amber-400" />
-                <span>Complete Pre-Test to Begin Investigation</span>
-              </>
-            )}
-          </motion.button>
-        </div>
-
-        {/* Developer / Reset Option */}
-        <div className="mt-8 text-center">
-          <button
-            onClick={() => {
-              sessionStorage.clear();
-              window.location.reload();
-            }}
-            className="text-[10px] text-slate-600 hover:text-slate-400 underline transition cursor-pointer"
-          >
-            Reset all data (Restart game / Clear Pre-test status)
-          </button>
-        </div>
-      </div>
-    </motion.div>
+              <div className="bg-amber-500/10 p-6 text-center border-b border-amber-500/20">
+                <Lock className="mx-auto mb-3 h-8 w-8 text-amber-500" />
+                <h3 className="text-xl font-bold text-slate-100">Security Clearance Required</h3>
+                <p className="mt-2 text-sm text-amber-200/80">
+                  Mission access requires completing a mandatory Pre-Test evaluation.
+                </p>
+              </div>
+              <div className="p-6 space-y-6">
+                {!hasOpenedForm ? (
+                  <div className="text-center">
+                    <p className="mb-4 text-sm text-slate-300">
+                      Please complete the pre-test form in a new tab. Once submitted, return here to unlock the system.
+                    </p>
+                    <button
+                      onClick={handleOpenPretest}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded bg-indigo-600 px-4 py-3 text-sm font-semibold text-white hover:bg-indigo-500 transition cursor-pointer"
+                    >
+                      <ExternalLink className="h-4 w-4" />
+                      Open Pre-Test Form
+                    </button>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="rounded border border-emerald-500/30 bg-emerald-950/30 p-4 text-center">
+                      <p className="text-sm text-emerald-300">
+                        Form opened. Have you submitted your answers?
+                      </p>
+                    </div>
+                    <label className="flex items-start gap-3 rounded bg-slate-950/50 p-3 cursor-pointer border border-slate-800 hover:border-slate-700 transition">
+                      <input
+                        type="checkbox"
+                        checked={confirmedSubmitted}
+                        onChange={(e) => setConfirmedSubmitted(e.target.checked)}
+                        className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-amber-500 focus:ring-amber-500/20"
+                      />
+                      <span className="text-sm text-slate-300">
+                        I confirm that I have submitted the Pre-test completely.
+                      </span>
+                    </label>
+                    <button
+                      onClick={handleConfirmDone}
+                      disabled={!confirmedSubmitted}
+                      className="inline-flex w-full items-center justify-center gap-2 rounded bg-amber-500 px-4 py-3 text-sm font-bold text-slate-950 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-amber-400 transition cursor-pointer"
+                    >
+                      <CheckCircle2 className="h-4 w-4" />
+                      Confirm & Unlock Access
+                    </button>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 };

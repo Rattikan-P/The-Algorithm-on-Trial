@@ -464,10 +464,8 @@ export const BuildCaseStage: React.FC<BuildCaseStageProps> = ({
     }
   } else if (phase === 'conclude') {
     if (showMismatchedAlert && coherenceResult) {
-      voiceText = `The evidence you cited points toward "${
-        FRAME_LABELS[coherenceResult.dominantFrame || 'c']
-      }" — not the conclusion you picked. Think it through again.`;
-      metaTag = 'Try again';
+      voiceText = `Your selected conclusion doesn't fully align with the weight of the evidence and witness statements you've gathered. Please review your findings and choose the conclusion that best reflects the root cause.`;
+      metaTag = 'Review Conclusion';
       actionButton = (
         <button
           type="button"

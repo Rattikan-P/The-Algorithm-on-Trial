@@ -617,9 +617,15 @@ export const ReportStage: React.FC<ReportStageProps> = ({
             </span>
           </div>
 
-          <p className="font-serif text-sm text-slate-200">Dear Maria R.,</p>
+          <div className="mb-3 font-mono text-[10px] text-amber-300/80 bg-slate-950/60 p-2.5 rounded border border-slate-800 space-y-0.5">
+            <p><strong>TO:</strong> Priya Vance, Senior Data Compliance Officer</p>
+            <p><strong>FROM:</strong> Independent External Audit Team</p>
+            <p><strong>SUBJECT:</strong> Forensic XAI Model Review & Audit Findings</p>
+          </div>
+
+          <p className="font-serif text-sm text-slate-200">Executive Audit Summary:</p>
           <p className="mt-1 font-serif text-xs leading-relaxed text-slate-300">
-            Our independent audit compared your application with approved peers possessing identical financial numbers. We found that FinTrust’s official reasons did not determine your rejection. The true drivers were:
+            Our independent counterfactual audit compared rejected qualified loan applicants with approved peers possessing identical financial numbers. We verified that FinTrust’s official rejection reasons served as ethical camouflage. The true systemic drivers uncovered by our XAI investigation are:
           </p>
 
           {/* Key Findings List */}

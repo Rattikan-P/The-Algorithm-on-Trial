@@ -43,20 +43,20 @@ export const AuditStage: React.FC<AuditStageProps> = ({ onContinue }) => {
 
   return (
     <motion.div
-      className="relative min-h-screen bg-slate-950 px-4 py-8 text-slate-200"
+      className="relative flex min-h-screen flex-col items-center justify-center bg-slate-950 px-4 py-4 text-slate-200 overflow-y-auto"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto w-full max-w-2xl my-auto">
         {/* Header */}
-        <div className="mb-6 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.25em] text-amber-500/70">
+        <div className="mb-3 text-center">
+          <p className="font-mono text-[10px] uppercase tracking-[0.25em] text-amber-500/70">
             Counterfactual Audit
           </p>
-          <h1 className="mt-1 font-serif text-3xl font-bold text-amber-100">
+          <h1 className="mt-0.5 font-serif text-xl sm:text-2xl font-bold text-amber-100">
             Audit the Official Explanation
           </h1>
-          <p className="mt-2 text-xs text-slate-400">
+          <p className="mt-1 text-xs text-slate-400">
             FinTrust gave four official reasons for denying the loan. Test each one against a real comparable profile.
           </p>
         </div>

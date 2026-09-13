@@ -111,19 +111,26 @@ export const TrainingChartEvidence: React.FC<TrainingChartEvidenceProps> = ({
   cUnlocked,
 }) => {
   return (
-    <div className="overflow-hidden rounded-lg border border-white/10 bg-[#1e1e1e] font-sans text-sm text-[#e0e0e0]">
+    <div className="overflow-hidden rounded-lg border border-amber-500/40 bg-[#1e1e1e] font-sans text-sm text-[#e0e0e0] shadow-[0_0_25px_rgba(245,158,11,0.15)]">
       <WindowHeader title="training_summary.png — FinTrust Analytics" icon={FileText} />
       <div className="flex items-center justify-between border-b border-white/10 px-4 py-2 text-xs text-slate-400">
         <span>datasets / training_v3.csv</span>
         <span>n = 50,000</span>
       </div>
       <div className="p-4">
-        <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
-          Loan approval training set composition
-        </p>
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">
+            Loan approval training set composition
+          </p>
+          {interactive && !cUnlocked && (
+            <span className="inline-flex items-center gap-1 rounded bg-amber-500/20 px-2 py-0.5 font-mono text-[10px] font-bold text-amber-300 animate-pulse border border-amber-500/40">
+              🔍 Inspect Anomalies
+            </span>
+          )}
+        </div>
         <div
-          className="flex items-end justify-around gap-3 rounded-md bg-[#181818] p-4"
-          style={{ height: 200 }}
+          className="flex items-end justify-around gap-3 rounded-md bg-[#181818] p-4 pt-8 border border-white/5"
+          style={{ height: 230 }}
         >
           {TRAINING_DISTRIBUTION.map((group) => {
             const isTarget = interactive && group.highlight;
@@ -135,25 +142,27 @@ export const TrainingChartEvidence: React.FC<TrainingChartEvidenceProps> = ({
                 onClick={handleClick}
                 role={isTarget ? 'button' : undefined}
                 tabIndex={isTarget ? 0 : undefined}
-                className={`group flex w-1/5 flex-col items-center justify-end ${
+                className={`group flex w-1/5 flex-col items-center justify-end h-full ${
                   isTarget && !cUnlocked ? 'cursor-pointer' : ''
                 }`}
               >
-                <span className="mb-1 text-xs text-slate-300">{group.pct}%</span>
+                <span className={`mb-3 font-mono text-xs font-bold ${isTarget ? 'text-amber-300' : 'text-slate-300'}`}>
+                  {group.pct}%
+                </span>
                 <div
-                  className={`w-full rounded-t transition ${
+                  className={`w-full rounded-t transition duration-200 ${
                     isTarget && !cUnlocked
-                      ? 'ring-2 ring-amber-400 ring-offset-1 ring-offset-[#181818] group-hover:opacity-90'
+                      ? 'ring-4 ring-amber-400 ring-offset-2 ring-offset-[#181818] animate-bounce shadow-[0_0_25px_rgba(245,158,11,0.8)]'
                       : ''
                   }`}
                   style={{
-                    height: `${group.pct * 1.6}px`,
+                    height: `${group.pct * 1.35}px`,
                     backgroundColor: group.color,
                   }}
                 />
                 <span
                   className={`mt-2 text-xs ${
-                    group.highlight ? 'font-bold text-red-400' : 'text-slate-400'
+                    group.highlight ? 'font-bold text-amber-300 underline underline-offset-4 decoration-amber-400' : 'text-slate-400'
                   }`}
                 >
                   {group.label}
@@ -163,11 +172,11 @@ export const TrainingChartEvidence: React.FC<TrainingChartEvidenceProps> = ({
           })}
         </div>
         {interactive && (
-          <p className="mt-3 flex items-center justify-center gap-1 text-center text-xs text-amber-300">
-            <TriangleAlert className="h-3.5 w-3.5" />
+          <p className="mt-3 flex items-center justify-center gap-1 text-center text-xs text-amber-300 font-medium">
+            <TriangleAlert className="h-4 w-4 text-amber-400 shrink-0" />
             {cUnlocked
-              ? 'Severe disparity verified for Group C (only 8% representation).'
-              : 'Click the Group C bar to flag the underrepresented dataset distribution.'}
+              ? '✓ Severe disparity verified for Group C (only 8% representation).'
+              : '⚡ Click the highlighted Group C bar above to investigate the skewed demographic distribution.'}
           </p>
         )}
       </div>
