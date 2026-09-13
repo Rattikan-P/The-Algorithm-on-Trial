@@ -104,8 +104,43 @@ export interface SessionEventRecord {
 export interface SessionLog {
   id: string;
   startedAt: number;
+  completedAt?: number;
+  totalDurationMs?: number;
   currentStage?: GameStage;
   stages: Record<string, SessionStageRecord>;
   events: SessionEventRecord[];
   summary?: Record<string, unknown>;
 }
+
+export interface GoogleSheetsPayload {
+  timestamp: string;
+  sessionId: string;
+  totalDurationSeconds: number;
+  totalDurationStr: string;
+  startedAtIso: string;
+  completedAtIso: string;
+  stageDurations: {
+    notice?: string;
+    audit?: string;
+    investigation?: string;
+    buildcase?: string;
+    debrief?: string;
+    report?: string;
+  };
+  score: number;
+  rank: string;
+  verdict: string;
+  verdictLabel: string;
+  coherencePct: number;
+  coherenceTier: string;
+  evidenceCount: number;
+  bonusCount: number;
+  evidencesList: string;
+  bonusList: string;
+  pretestCompleted: boolean;
+  posttestCompleted: boolean;
+  userAgent?: string;
+  actionLogCount: number;
+  recentEventsSummary: string;
+}
+

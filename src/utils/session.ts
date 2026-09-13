@@ -82,6 +82,8 @@ export function finishStage(summaryData: Record<string, unknown> = {}): SessionL
     session.stages[cur].exitedAt = now;
     session.stages[cur].durationMs = (session.stages[cur].durationMs || 0) + (now - session.stages[cur].enteredAt);
   }
+  session.completedAt = now;
+  session.totalDurationMs = Math.max(0, now - session.startedAt);
   session.summary = summaryData;
   saveSession(session);
   return session;
@@ -95,6 +97,38 @@ export function downloadSessionData(): void {
   const a = document.createElement('a');
   a.href = url;
   a.download = `aot_session_${session.id}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+export function downloadSessionCsv(): void {
+  const session = getCurrentSession();
+  if (!session) return;
+  const now = Date.now();
+  const totalDurationSeconds = Math.round(((session.completedAt || now) - session.startedAt) / 1000);
+
+  const headers = ['Metric', 'Value'];
+  const rows = [
+    ['Session ID', session.id],
+    ['Started At', new Date(session.startedAt).toLocaleString('th-TH')],
+    ['Completed At', session.completedAt ? new Date(session.completedAt).toLocaleString('th-TH') : '-'],
+    ['Total Duration (Seconds)', totalDurationSeconds.toString()],
+    ['Event Logs Count', (session.events?.length || 0).toString()],
+  ];
+
+  if (session.stages) {
+    Object.entries(session.stages).forEach(([stageName, record]) => {
+      const durationSec = Math.round((record.durationMs || 0) / 1000);
+      rows.push([`Stage Time: ${stageName}`, `${durationSec}s`]);
+    });
+  }
+
+  const csvContent = [headers.join(','), ...rows.map((r) => `"${r[0]}","${r[1]}"`)].join('\n');
+  const blob = new Blob(['\uFEFF' + csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `aot_session_${session.id}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 }
