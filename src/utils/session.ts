@@ -20,6 +20,9 @@ export function initSession(): SessionLog {
       notice: { enteredAt: Date.now() },
     },
     events: [],
+    inferenceErrorCount: 0,
+    auditErrorCount: 0,
+    debriefErrorCount: 0,
   };
   saveSession(session);
   return session;
@@ -70,6 +73,20 @@ export function logSessionEvent(type: string, data: Record<string, unknown> = {}
     type,
     ...data,
   });
+  saveSession(session);
+}
+
+export function recordErrorAttempt(type: 'inference' | 'audit' | 'debrief', context?: string): void {
+  const session = getCurrentSession();
+  if (!session) return;
+  if (type === 'inference') {
+    session.inferenceErrorCount = (session.inferenceErrorCount || 0) + 1;
+  } else if (type === 'audit') {
+    session.auditErrorCount = (session.auditErrorCount || 0) + 1;
+  } else if (type === 'debrief') {
+    session.debriefErrorCount = (session.debriefErrorCount || 0) + 1;
+  }
+  logSessionEvent('error_attempt', { type, context: context || '' });
   saveSession(session);
 }
 

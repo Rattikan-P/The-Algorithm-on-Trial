@@ -110,6 +110,9 @@ export interface SessionLog {
   stages: Record<string, SessionStageRecord>;
   events: SessionEventRecord[];
   summary?: Record<string, unknown>;
+  inferenceErrorCount?: number;
+  auditErrorCount?: number;
+  debriefErrorCount?: number;
 }
 
 export interface GoogleSheetsPayload {
@@ -131,14 +134,15 @@ export interface GoogleSheetsPayload {
   rank: string;
   verdict: string;
   verdictLabel: string;
+  verdictCombined?: string;
+  inferenceErrors?: number;
+  totalErrors?: number;
   coherencePct: number;
   coherenceTier: string;
   evidenceCount: number;
   bonusCount: number;
   evidencesList: string;
   bonusList: string;
-  pretestCompleted: boolean;
-  posttestCompleted: boolean;
   userAgent?: string;
   actionLogCount: number;
   recentEventsSummary: string;

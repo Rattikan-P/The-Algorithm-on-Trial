@@ -37,6 +37,7 @@ import {
   PHONE_INTERVIEW_QUESTIONS,
 } from '../data/gameData';
 import { RoomId } from '../types';
+import { recordErrorAttempt } from '../utils/session';
 
 interface InvestigationStageProps {
   unlockedEvidences: number[];
@@ -298,6 +299,7 @@ const PriyaOffice: React.FC<{
       setPcError(false);
     } else {
       setPcError(true);
+      recordErrorAttempt('inference', 'Priya PC: Incorrect passcode entered');
     }
   };
 
@@ -310,6 +312,7 @@ const PriyaOffice: React.FC<{
       setPhoneState('unlocked');
     } else {
       setPhoneState('wrong');
+      recordErrorAttempt('inference', `Desk phone interview: option ${key} selected`);
     }
   };
 
@@ -874,6 +877,7 @@ const VpOffice: React.FC<{
       addNote('Unlocked VP Tablet: found directive email (Evidence #3) and draft PR coverup (Evidence #6)');
     } else {
       setPinError(true);
+      recordErrorAttempt('inference', 'VP Tablet: Incorrect PIN entered');
     }
   };
 

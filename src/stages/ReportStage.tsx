@@ -4,7 +4,6 @@ import {
   Award,
   FileText,
   RotateCcw,
-  Download,
   ExternalLink,
   MessageSquare,
   Check,
@@ -33,8 +32,6 @@ import {
   CONSENT_NOTE,
 } from '../data/gameData';
 import {
-  exportSessionData,
-  downloadSessionCsv,
   getDetectiveRank,
   getCurrentSession,
   finishStage,
@@ -164,10 +161,6 @@ export const ReportStage: React.FC<ReportStageProps> = ({
     setPosttestDone(true);
     localStorage.setItem('posttest_completed', 'true');
     setShowPosttestModal(false);
-    // Re-sync with updated posttest status
-    if (webhookUrl || getSavedWebhookUrl()) {
-      triggerSheetsSync();
-    }
   };
 
   const citedEvidences = (caseEvidence || [])
@@ -739,7 +732,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({
           </p>
         </div>
 
-        {/* Post-test Action & Download & Exports */}
+        {/* Post-test Action */}
         <div className="mb-6 flex flex-col items-center gap-3">
           {posttestDone ? (
             <button
@@ -760,26 +753,6 @@ export const ReportStage: React.FC<ReportStageProps> = ({
               <span>Complete Post-Test Assessment (Required)</span>
             </button>
           )}
-
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
-            <button
-              type="button"
-              onClick={downloadSessionCsv}
-              className="inline-flex items-center gap-1.5 underline-offset-2 hover:text-emerald-300 hover:underline cursor-pointer"
-            >
-              <Table className="h-3.5 w-3.5 text-emerald-400" />
-              <span>Export summary table (.csv)</span>
-            </button>
-            <span className="text-slate-600">|</span>
-            <button
-              type="button"
-              onClick={exportSessionData}
-              className="inline-flex items-center gap-1.5 underline-offset-2 hover:text-slate-200 hover:underline cursor-pointer"
-            >
-              <Download className="h-3.5 w-3.5 text-slate-400" />
-              <span>Export full audit logs (.json)</span>
-            </button>
-          </div>
         </div>
 
         {/* Discovery Order Breadcrumb */}

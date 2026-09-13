@@ -3,7 +3,7 @@ import { EVIDENCES, VERDICT_FRAMES } from '../data/gameData';
 import { getCurrentSession, getDetectiveRank } from './session';
 
 const WEBHOOK_STORAGE_KEY = 'aot_gsheets_webhook_url';
-export const DEFAULT_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbzq-PzHWf0zPwCRPa-mkEpYIm7kqLLnc9EMuOFXQ-Zacli-skRh60QL0DCJ-5Ex3Ar-/exec';
+export const DEFAULT_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbxFaZdY0rlb3MlHMOxDCJ2Qk2tgmK8EvkZ6IKS7IHaRkiUxayEqOcytflNvuNPpaThMCg/exec';
 
 export const APPS_SCRIPT_TEMPLATE = `function doPost(e) {
   try {
@@ -32,12 +32,10 @@ export const APPS_SCRIPT_TEMPLATE = `function doPost(e) {
         "Bonus Clues Count",
         "Evidence List",
         "Bonus Clues List",
-        "Pre-test Done",
-        "Post-test Done",
         "Recent Action Logs"
       ]);
       // Format Header styling
-      sheet.getRange(1, 1, 1, 22).setFontWeight("bold").setBackground("#1e293b").setFontColor("#f8fafc");
+      sheet.getRange(1, 1, 1, 20).setFontWeight("bold").setBackground("#1e293b").setFontColor("#f8fafc");
       sheet.setFrozenRows(1);
     }
     
@@ -62,8 +60,6 @@ export const APPS_SCRIPT_TEMPLATE = `function doPost(e) {
       data.bonusCount,
       data.evidencesList,
       data.bonusList,
-      data.pretestCompleted ? "Yes" : "No",
-      data.posttestCompleted ? "Yes" : "No",
       data.recentEventsSummary
     ]);
     
@@ -145,15 +141,15 @@ export function buildGoogleSheetsPayload(params: {
     .map((ev) => `[${ev.type}]`)
     .join(' -> ');
 
-  const pretestDone = localStorage.getItem('pretest_completed') === 'true';
-  const posttestDone = localStorage.getItem('posttest_completed') === 'true';
-
   let coherenceTier = 'Partial Plausibility';
   if (params.result) {
     if (params.result.tier === 'complete') coherenceTier = 'High Forensic Precision';
     else if (params.result.tier === 'narrow') coherenceTier = 'Substantial Alignment';
     else coherenceTier = 'Cognitive Divergence';
   }
+
+  const inferenceErrors = session?.inferenceErrorCount || 0;
+  const totalErrors = inferenceErrors + (session?.auditErrorCount || 0) + (session?.debriefErrorCount || 0);
 
   return {
     timestamp: new Date().toLocaleString('th-TH', { timeZone: 'Asia/Bangkok' }),
@@ -167,14 +163,17 @@ export function buildGoogleSheetsPayload(params: {
     rank,
     verdict: params.verdictFrame ? `Frame ${params.verdictFrame.toUpperCase()}` : 'None',
     verdictLabel: verdictOption?.label || 'Unassigned',
+    verdictCombined: params.verdictFrame
+      ? `Frame ${params.verdictFrame.toUpperCase()} (${verdictOption?.label || ''})`
+      : 'None',
+    inferenceErrors,
+    totalErrors,
     coherencePct: params.result?.pct ?? 0,
     coherenceTier,
     evidenceCount: params.unlockedEvidences.length,
     bonusCount: params.bonusClues.length,
     evidencesList: evidenceNames || 'None',
     bonusList: params.bonusClues.join(', ') || 'None',
-    pretestCompleted: pretestDone,
-    posttestCompleted: posttestDone,
     userAgent: typeof navigator !== 'undefined' ? navigator.userAgent.slice(0, 200) : 'Browser',
     actionLogCount: session?.events?.length || 0,
     recentEventsSummary: recentEvents || 'Started',
@@ -185,9 +184,12 @@ export function buildGoogleSheetsPayload(params: {
  * Sends session data to Google Apps Script Webhook.
  * Uses no-cors so cross-origin restrictions from Google Apps Script do not fail the request.
  */
+const syncedSessionIds = new Set<string>();
+
 export async function sendToGoogleSheets(
   payload: GoogleSheetsPayload,
-  webhookUrl?: string
+  webhookUrl?: string,
+  force: boolean = false
 ): Promise<{ success: boolean; message: string }> {
   const url = (webhookUrl || getSavedWebhookUrl()).trim();
   if (!url) {
@@ -195,6 +197,18 @@ export async function sendToGoogleSheets(
       success: false,
       message: 'No Google Sheets Webhook URL configured',
     };
+  }
+
+  // Deduplicate by Session ID to prevent duplicate rows in Google Sheets
+  if (!force && payload.sessionId && syncedSessionIds.has(payload.sessionId)) {
+    return {
+      success: true,
+      message: 'Session already synced to Google Sheets',
+    };
+  }
+
+  if (payload.sessionId) {
+    syncedSessionIds.add(payload.sessionId);
   }
 
   try {

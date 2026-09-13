@@ -19,7 +19,7 @@ import {
   IMAGES,
   VERDICT_FRAMES,
 } from '../data/gameData';
-import { calculateVerdictCoherence } from '../utils/session';
+import { calculateVerdictCoherence, recordErrorAttempt } from '../utils/session';
 import { CoherenceResult, EvidenceItem, FrameKey } from '../types';
 
 interface BuildCaseStageProps {
@@ -354,12 +354,14 @@ export const BuildCaseStage: React.FC<BuildCaseStageProps> = ({
     if (wrongItems.length > 0) {
       setMismatchedIds(wrongItems);
       setStatus('wrong');
+      recordErrorAttempt('inference', `Timeline Event ${stepIdx + 1}: wrong evidence selected [${wrongItems.join(',')}]`);
       return;
     }
     const missing = currentStep.relevant.filter((id) => !selectedIds.includes(id));
     if (missing.length > 0) {
       setMissingCount(missing.length);
       setStatus('incomplete');
+      recordErrorAttempt('inference', `Timeline Event ${stepIdx + 1}: incomplete evidence (${missing.length} missing)`);
       return;
     }
     setCitedByStep((prev) => ({ ...prev, [currentStep.key]: selectedIds }));
@@ -383,6 +385,7 @@ export const BuildCaseStage: React.FC<BuildCaseStageProps> = ({
     if (coherence.tier === 'complete') {
       setPhase('done');
     } else {
+      recordErrorAttempt('inference', `Verdict selection mismatched: ${option.key}`);
       setShowMismatchedAlert(true);
     }
   };
