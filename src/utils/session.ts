@@ -30,7 +30,7 @@ export function initSession(): SessionLog {
 
 export function getCurrentSession(): SessionLog | null {
   try {
-    const raw = localStorage.getItem(SESSION_STORAGE_KEY);
+    const raw = sessionStorage.getItem(SESSION_STORAGE_KEY);
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -39,7 +39,7 @@ export function getCurrentSession(): SessionLog | null {
 
 export function saveSession(session: SessionLog): void {
   try {
-    localStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
+    sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify(session));
   } catch {
     // ignore
   }

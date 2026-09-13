@@ -77,14 +77,14 @@ export const ReportStage: React.FC<ReportStageProps> = ({
 
   // Post-test modal and status tracking
   const [posttestDone, setPosttestDone] = useState<boolean>(() => {
-    return localStorage.getItem('posttest_completed') === 'true';
+    return sessionStorage.getItem('posttest_completed') === 'true';
   });
   const [hasOpenedPosttest, setHasOpenedPosttest] = useState<boolean>(() => {
-    return localStorage.getItem('posttest_opened') === 'true';
+    return sessionStorage.getItem('posttest_opened') === 'true';
   });
   const [confirmedPosttest, setConfirmedPosttest] = useState<boolean>(false);
   const [showPosttestModal, setShowPosttestModal] = useState<boolean>(() => {
-    return localStorage.getItem('posttest_completed') !== 'true';
+    return sessionStorage.getItem('posttest_completed') !== 'true';
   });
 
   // Calculate scores
@@ -153,13 +153,13 @@ export const ReportStage: React.FC<ReportStageProps> = ({
 
   const handleOpenPosttest = () => {
     setHasOpenedPosttest(true);
-    localStorage.setItem('posttest_opened', 'true');
+    sessionStorage.setItem('posttest_opened', 'true');
     window.open(POSTTEST_URL, '_blank', 'noopener,noreferrer');
   };
 
   const handleConfirmPosttestDone = () => {
     setPosttestDone(true);
-    localStorage.setItem('posttest_completed', 'true');
+    sessionStorage.setItem('posttest_completed', 'true');
     setShowPosttestModal(false);
   };
 

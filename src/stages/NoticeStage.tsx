@@ -22,25 +22,25 @@ interface NoticeStageProps {
 
 export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
   const [pretestDone, setPretestDone] = useState<boolean>(() => {
-    return localStorage.getItem('pretest_completed') === 'true';
+    return sessionStorage.getItem('pretest_completed') === 'true';
   });
   const [hasOpenedForm, setHasOpenedForm] = useState<boolean>(() => {
-    return localStorage.getItem('pretest_opened') === 'true';
+    return sessionStorage.getItem('pretest_opened') === 'true';
   });
   const [confirmedSubmitted, setConfirmedSubmitted] = useState<boolean>(false);
   const [showPretestModal, setShowPretestModal] = useState<boolean>(() => {
-    return localStorage.getItem('pretest_completed') !== 'true';
+    return sessionStorage.getItem('pretest_completed') !== 'true';
   });
 
   const handleOpenPretest = () => {
     setHasOpenedForm(true);
-    localStorage.setItem('pretest_opened', 'true');
+    sessionStorage.setItem('pretest_opened', 'true');
     window.open(PRETEST_URL, '_blank', 'noopener,noreferrer');
   };
 
   const handleConfirmDone = () => {
     setPretestDone(true);
-    localStorage.setItem('pretest_completed', 'true');
+    sessionStorage.setItem('pretest_completed', 'true');
     setShowPretestModal(false);
   };
 
@@ -315,6 +315,19 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
               </>
             )}
           </motion.button>
+        </div>
+
+        {/* Developer / Reset Option */}
+        <div className="mt-8 text-center">
+          <button
+            onClick={() => {
+              sessionStorage.clear();
+              window.location.reload();
+            }}
+            className="text-[10px] text-slate-600 hover:text-slate-400 underline transition cursor-pointer"
+          >
+            รีเซ็ตข้อมูลทั้งหมด (เริ่มเล่นใหม่/ลบสถานะ Pre-test)
+          </button>
         </div>
       </div>
     </motion.div>

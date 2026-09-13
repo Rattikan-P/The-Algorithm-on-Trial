@@ -100,6 +100,7 @@ export default function App() {
     setInventory([]);
     setNotes([]);
     setBonusClues([]);
+    sessionStorage.clear();
     initSession();
     recordStage('notice');
     window.scrollTo({ top: 0, behavior: 'smooth' });

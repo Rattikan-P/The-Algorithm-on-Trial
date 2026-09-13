@@ -1,0 +1,6 @@
+--- src/App.tsx
++++ src/App.tsx
+@@ -107,2 +107,3 @@
+     setBonusClues([]);
++    sessionStorage.clear();
+     initSession();
