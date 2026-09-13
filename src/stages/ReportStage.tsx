@@ -482,43 +482,6 @@ export const ReportStage: React.FC<ReportStageProps> = ({
           )}
         </div>
 
-        {/* Google Sheets Sync Status Bar */}
-        <div className="mb-6 flex flex-col sm:flex-row items-center justify-between gap-2.5 rounded-lg border border-emerald-500/30 bg-emerald-950/20 px-4 py-3">
-          <div className="flex items-center gap-2.5 text-xs">
-            <Table className="h-4 w-4 text-emerald-400 flex-shrink-0" />
-            <div>
-              <span className="font-semibold text-slate-200">Google Sheets Logging: </span>
-              {syncStatus === 'success' ? (
-                <span className="text-emerald-300 font-medium">✓ บันทึกข้อมูลและสถิติเวลาลง Sheets สำเร็จ</span>
-              ) : syncStatus === 'sending' ? (
-                <span className="text-sky-300">กำลังส่งข้อมูล...</span>
-              ) : syncStatus === 'error' ? (
-                <span className="text-rose-400">ส่งไม่สำเร็จ (ตรวจสอบ Webhook URL)</span>
-              ) : (
-                <span className="text-slate-400">พร้อมบันทึกคะแนนและเวลา</span>
-              )}
-            </div>
-          </div>
-          <div className="flex items-center gap-2">
-            <button
-              type="button"
-              onClick={() => triggerSheetsSync()}
-              className="inline-flex items-center gap-1 rounded bg-emerald-600/80 hover:bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white transition cursor-pointer"
-            >
-              <Send className="h-3 w-3" />
-              <span>ส่งข้อมูลทันที</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setShowSheetsConfig(true)}
-              className="inline-flex items-center gap-1 rounded border border-slate-700 bg-slate-800/80 hover:bg-slate-700 px-3 py-1.5 text-xs font-medium text-slate-300 transition cursor-pointer"
-            >
-              <Settings className="h-3 w-3 text-slate-400" />
-              <span>ตั้งค่า Sheets / คู่มือ</span>
-            </button>
-          </div>
-        </div>
-
         {/* Investigator Score Card */}
         <div className="mb-6 rounded-lg border border-amber-500/30 bg-amber-50/[0.03] p-5 sm:p-6 shadow-[0_0_30px_rgba(245,158,11,0.12)]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-amber-500/20 pb-4">
@@ -559,7 +522,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({
             <div className="mb-4 rounded-md border border-slate-800 bg-slate-950/60 p-3">
               <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1">
                 <Clock className="h-3 w-3 text-slate-400" />
-                <span>Playtime by Investigation Stage (เวลาที่ใช้แต่ละด่าน):</span>
+                <span>Playtime by Investigation Stage:</span>
               </p>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
                 <div className="rounded bg-slate-900 p-2 border border-slate-800">

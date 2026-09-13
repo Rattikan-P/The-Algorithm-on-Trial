@@ -71,8 +71,12 @@ export const JournalModal: React.FC<JournalModalProps> = ({
                     key={itemId}
                     className="flex items-start gap-3 rounded-md border border-amber-500/20 bg-slate-800/40 p-2.5"
                   >
-                    <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded border border-amber-500/30 bg-slate-900">
-                      {getIcon(item.icon)}
+                    <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded border border-amber-500/30 bg-slate-900 overflow-hidden">
+                      {item.image ? (
+                        <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
+                      ) : (
+                        getIcon(item.icon)
+                      )}
                     </div>
                     <div>
                       <p className="text-xs font-bold text-amber-200">{item.name}</p>

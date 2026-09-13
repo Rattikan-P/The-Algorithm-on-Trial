@@ -326,7 +326,7 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
             }}
             className="text-[10px] text-slate-600 hover:text-slate-400 underline transition cursor-pointer"
           >
-            รีเซ็ตข้อมูลทั้งหมด (เริ่มเล่นใหม่/ลบสถานะ Pre-test)
+            Reset all data (Restart game / Clear Pre-test status)
           </button>
         </div>
       </div>
