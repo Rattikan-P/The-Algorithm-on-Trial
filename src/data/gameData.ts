@@ -16,11 +16,11 @@ import evidencePhoneCallImg from '../assets/images/evidence_phone_call_178928326
 import evidencePrDraftImg from '../assets/images/evidence_pr_draft_1789283285364.jpg';
 import evidenceModelServerImg from '../assets/images/evidence_model_server_1789283299006.jpg';
 
-export const PRETEST_URL = 'https://forms.gle/PLACEHOLDER_PRETEST';
-export const POSTTEST_URL = 'https://forms.gle/PLACEHOLDER_POSTTEST';
+export const PRETEST_URL = 'https://forms.gle/pGpquvpVPTtF5rfE8';
+export const POSTTEST_URL = 'https://forms.gle/z43P4SC8RJJNnCdq5';
 
 export const CONSENT_NOTE =
-  'This game is part of a research study on AI ethics. Participation is voluntary, no personally identifying information is collected, and you may stop playing at any time without penalty.';
+  'This game is part of the course 953420: Ethics and Professionalism for Software Engineers. Participation is voluntary, no personally identifying information is collected, and you may stop playing at any time without penalty.';
 
 export const REJECTION_LETTER_TEXT = `Dear Applicant,
 Following our risk assessment, your loan application did not meet our approval criteria. This decision was based on multiple financial factors and cannot be attributed to any specific reason.
@@ -52,25 +52,25 @@ export const AUDIT_FACTORS: AuditFactor[] = [
 export const OFFICIAL_REASONS: OfficialReason[] = [
   {
     id: 'r1',
-    label: 'Insufficient credit history',
+    label: 'Historical credit performance falls below our internal stability thresholds.',
     factorKey: 'credit_score',
     note: 'Both credit scores are identical at 780 — this reason does not separate the two applicants',
   },
   {
     id: 'r2',
-    label: 'Debt-to-income ratio too high',
+    label: 'Aggregate debt-to-income ratio exceeds the risk-adjusted organizational ceiling.',
     factorKey: 'debt_to_income',
     note: 'Both DTI ratios are identical at 0.28 — this reason does not separate the two applicants',
   },
   {
     id: 'r3',
-    label: 'Income below the threshold',
+    label: 'Applicant income fails to meet our proprietary risk-diversification requirements.',
     factorKey: 'annual_income',
     note: 'Both incomes are identical — this reason does not separate the two applicants',
   },
   {
     id: 'r4',
-    label: 'Risk score below the cutoff',
+    label: 'Predictive risk assessment model generated a non-approvable solvency score.',
     factorKey: 'risk_score',
     note: "This is the model's own output, not a reason — citing the outcome to explain the outcome is not a real explanation",
   },
@@ -140,6 +140,7 @@ export const EVIDENCES: Record<number, EvidenceItem> = {
     pointsTo: ['a', 'c'],
     image: evidenceModelServerImg,
   },
+
 };
 
 export const INVENTORY_ITEMS: Record<string, InventoryItem> = {

@@ -23,10 +23,10 @@ interface NoticeStageProps {
 }
 
 const DIALOGUE_LINES = [
-  { sender: 'system', text: 'SECURE ENCRYPTED CHANNEL INITIALIZED. ID: FINTRUST-EXT-902.' },
+  { sender: 'system', text: 'SYSTEM CONNECTION INITIALIZED. ID: AUDIT-FINTRUST-902.' },
   { sender: 'priya', text: 'External auditor? This is Priya Vance, Senior Data Compliance Officer at FinTrust.' },
   { sender: 'priya', text: 'We have retained your firm under confidential directive to review our automated credit-scoring model.' },
-  { sender: 'priya', text: 'Internal operations have flagged anomalous rejection rates for fully qualified loan applicants. However, management insists the automated system is an impenetrable "Black Box" that cannot be audited.' },
+  { sender: 'priya', text: 'Internal operations have flagged anomalous rejection rates for fully qualified loan applicants. However, management insists the automated system is a complex "Black Box" that cannot be audited.' },
   { sender: 'priya', text: 'We require an independent technical audit utilizing Explainable AI (XAI) methodologies to examine the model parameters and verify its decision integrity.' },
 ];
 
@@ -169,7 +169,7 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
                     onClick={handleNextDialogue}
                     className="flex items-center gap-2 rounded-lg bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 hover:bg-amber-400 shadow-lg shadow-amber-500/20 transition cursor-pointer"
                   >
-                    {dialogueIndex === DIALOGUE_LINES.length - 1 ? 'OPEN BRIEFING DOSSIER' : 'NEXT'}
+                    {dialogueIndex === DIALOGUE_LINES.length - 1 ? 'OPEN MISSION BRIEFING' : 'NEXT'}
                     <ArrowRight className="h-4 w-4" />
                   </motion.button>
                 )}
@@ -220,7 +220,7 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
                   <div>
                     <h3 className="text-base font-semibold text-slate-200 mb-1">2. The Barrier: The "Black Box"</h3>
                     <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                      Management maintains that the algorithm functions as an impenetrable <strong className="text-slate-200">"Black Box" (กล่องดำ)</strong>, claiming its complex inner workings cannot be audited or explained.
+                      Management maintains that the algorithm functions as a complex <strong className="text-slate-200">"Black Box"</strong>, claiming its inner workings cannot be easily audited or explained.
                     </p>
                   </div>
                 </section>

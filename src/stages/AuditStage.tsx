@@ -145,23 +145,23 @@ export const AuditStage: React.FC<AuditStageProps> = ({ onContinue }) => {
                         key={factor.key}
                         className={`flex items-center justify-between rounded px-2.5 py-1.5 text-xs transition-all duration-300 ${
                           isTargetFactor
-                            ? 'border border-amber-400/80 bg-amber-500/20 shadow-[0_0_12px_rgba(245,158,11,0.25)]'
+                            ? 'border border-indigo-400/80 bg-indigo-500/20 shadow-[0_0_12px_rgba(99,102,241,0.25)]'
                             : 'border border-transparent hover:bg-slate-800/30'
                         }`}
                       >
-                        <span className={`font-serif ${isTargetFactor ? 'font-semibold text-amber-200' : 'text-slate-400'}`}>
+                        <span className={`font-serif ${isTargetFactor ? 'font-semibold text-indigo-200' : 'text-slate-400'}`}>
                           {factor.label}
                         </span>
                         <div className="flex items-center gap-1.5">
                           {isTargetFactor && (
-                            <span className="rounded bg-amber-400/20 px-1 py-0.2 font-mono text-[10px] text-amber-300">
+                            <span className="rounded bg-indigo-400/20 px-1 py-0.2 font-mono text-[10px] text-indigo-300">
                               EQUAL
                             </span>
                           )}
                           <span
                             className={`font-mono font-medium ${
                               isTargetFactor
-                                ? 'text-sm font-bold text-amber-100'
+                                ? 'text-sm font-bold text-indigo-100'
                                 : 'text-slate-200'
                             }`}
                           >
@@ -181,10 +181,10 @@ export const AuditStage: React.FC<AuditStageProps> = ({ onContinue }) => {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="mt-3 flex items-center justify-between rounded-md border border-amber-500/50 bg-slate-900/90 px-4 py-2.5 shadow-lg"
+              className="mt-3 flex items-center justify-between rounded-md border border-indigo-500/50 bg-slate-900/90 px-4 py-2.5 shadow-lg"
             >
-              <div className="flex items-center gap-2 font-serif text-xs text-amber-200">
-                <Scale className="h-4 w-4 text-amber-400 shrink-0" />
+              <div className="flex items-center gap-2 font-serif text-xs text-indigo-200">
+                <Scale className="h-4 w-4 text-indigo-400 shrink-0" />
                 <span>
                   Comparing <span className="font-semibold text-white">"{currentFactor.label}"</span> across applicants:
                 </span>
@@ -193,7 +193,7 @@ export const AuditStage: React.FC<AuditStageProps> = ({ onContinue }) => {
                 <span className="rounded bg-red-950/80 px-2 py-0.5 text-red-300 border border-red-500/40">
                   Maria: {currentFactor.maria}
                 </span>
-                <span className="text-amber-400 font-bold">==</span>
+                <span className="text-indigo-400 font-bold">==</span>
                 <span className="rounded bg-emerald-950/80 px-2 py-0.5 text-emerald-300 border border-emerald-500/40">
                   App B: {currentFactor.comparable}
                 </span>
@@ -212,10 +212,10 @@ export const AuditStage: React.FC<AuditStageProps> = ({ onContinue }) => {
         </div>
 
         {/* Official reasons buttons */}
-        <div className="mb-2 text-center font-mono text-[11px] uppercase tracking-widest text-slate-500">
-          FinTrust's official reasons — click each one to test it
+        <div className="mb-2 text-center font-mono text-xs uppercase tracking-widest text-amber-400 font-semibold">
+          ⚡ FinTrust's official reasons — click each one to test it
         </div>
-        <div className="mb-5 grid gap-2 sm:grid-cols-2">
+        <div className="mb-5 grid gap-3 sm:grid-cols-2">
           {OFFICIAL_REASONS.map((reason) => {
             const isTested = testedIds.has(reason.id);
             const isActive = activeReason?.id === reason.id;
@@ -224,27 +224,31 @@ export const AuditStage: React.FC<AuditStageProps> = ({ onContinue }) => {
                 key={reason.id}
                 type="button"
                 onClick={() => handleTestReason(reason)}
-                className={`flex items-center justify-between rounded-md border px-3 py-2.5 text-left text-xs transition ${
-                  isTested
-                    ? 'border-red-500/40 bg-red-500/5 text-red-200'
-                    : 'border-slate-700 bg-slate-900/60 text-slate-200 hover:border-sky-400/50 hover:bg-sky-500/5'
+                className={`flex items-center justify-between rounded-lg border px-4 py-3 text-left text-xs transition-all duration-200 ${
+                  isActive
+                    ? 'border-amber-400 bg-amber-500/20 shadow-[0_0_15px_rgba(245,158,11,0.3)] text-amber-100'
+                    : isTested
+                    ? 'border-red-500/40 bg-red-950/20 text-red-200'
+                    : 'border-slate-600 bg-slate-900/90 text-slate-100 hover:border-sky-400 hover:bg-sky-950/30 hover:shadow-md'
                 }`}
               >
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2.5">
                   {isTested ? (
-                    <X className="h-4 w-4 text-red-400" />
+                    <X className="h-4 w-4 text-red-400 shrink-0" />
                   ) : (
-                    <HelpCircle className="h-4 w-4 text-sky-300" />
+                    <HelpCircle className="h-4 w-4 text-sky-400 shrink-0 animate-pulse" />
                   )}
-                  <span className="font-serif">{reason.label}</span>
+                  <span className="font-serif font-medium">{reason.label}</span>
                 </span>
                 {isTested && (
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-red-300/80">
-                    Not the real reason
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-red-300/90 font-bold bg-red-900/40 px-1.5 py-0.5 rounded">
+                    Tested
                   </span>
                 )}
-                {!isTested && isActive && (
-                  <span className="font-mono text-[10px] text-sky-300">…</span>
+                {!isTested && (
+                  <span className={`font-mono text-[10px] px-2 py-0.5 rounded ${isActive ? 'bg-amber-500/30 text-amber-200 font-bold' : 'bg-slate-800 text-slate-400'}`}>
+                    {isActive ? 'Active' : 'Test'}
+                  </span>
                 )}
               </button>
             );

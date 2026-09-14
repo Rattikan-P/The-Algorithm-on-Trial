@@ -464,7 +464,7 @@ export const BuildCaseStage: React.FC<BuildCaseStageProps> = ({
     }
   } else if (phase === 'conclude') {
     if (showMismatchedAlert && coherenceResult) {
-      voiceText = `Your selected conclusion doesn't fully align with the weight of the evidence and witness statements you've gathered. Please review your findings and choose the conclusion that best reflects the root cause.`;
+      voiceText = `Audit findings inconsistency: Your conclusion is not supported by the forensic evidence package you have consolidated. Re-evaluate your audit report and ensure the verdict corresponds with the internal data.`;
       metaTag = 'Review Conclusion';
       actionButton = (
         <button
@@ -476,7 +476,7 @@ export const BuildCaseStage: React.FC<BuildCaseStageProps> = ({
         </button>
       );
     } else {
-      voiceText = `Alright — you've cited ${allCitedIds.length} pieces of evidence. In your conclusion: what do you believe is the true root cause of this failure?`;
+      voiceText = `Audit complete. You have consolidated ${allCitedIds.length} pieces of forensic evidence. Based on your findings, what is your official forensic verdict regarding the systemic failure at FinTrust?`;
       actionButton = (
         <div className="grid gap-2 sm:grid-cols-2">
           {VERDICT_FRAMES.map((option) => (

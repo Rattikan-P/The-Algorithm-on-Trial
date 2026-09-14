@@ -22,6 +22,7 @@ import {
   Send,
   User,
   ShieldCheck,
+  Mail,
 } from 'lucide-react';
 import {
   EVIDENCES,
@@ -603,86 +604,130 @@ export const ReportStage: React.FC<ReportStageProps> = ({
           )}
         </div>
 
-        {/* Independent Investigation Report Document */}
-        <div className="mb-6 rounded-lg border border-amber-500/30 bg-amber-50/[0.02] p-5 sm:p-6 shadow-[0_0_25px_rgba(245,158,11,0.08)]">
-          <div className="mb-4 flex items-center justify-between border-b border-amber-500/20 pb-3">
-            <div className="flex items-center gap-2">
-              <FileText className="h-4 w-4 text-amber-300" />
-              <span className="font-mono text-[11px] font-bold uppercase tracking-wider text-amber-300">
-                Audit Summary & Decision Findings
+        {/* Independent Investigation Report Document (Email / Formal Audit Memo Style) */}
+        <div className="mb-6 overflow-hidden rounded-xl border border-slate-800 bg-slate-900 shadow-2xl">
+          {/* Email Header Bar */}
+          <div className="flex items-center justify-between border-b border-slate-800 bg-slate-950 px-6 py-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-400">
+                <Mail className="h-4 w-4" />
+              </div>
+              <span className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-slate-400">
+                Official Correspondence
               </span>
             </div>
-            <span className="rounded bg-emerald-500/10 px-2 py-0.5 font-mono text-[10px] text-emerald-300 border border-emerald-500/20">
-              Case Status: Substantiated
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="rounded-full bg-emerald-500/10 px-3 py-1 font-mono text-[10px] font-bold text-emerald-400 border border-emerald-500/20 flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                VERIFIED
+              </span>
+            </div>
           </div>
 
-          <div className="mb-3 font-mono text-[10px] text-amber-300/80 bg-slate-950/60 p-2.5 rounded border border-slate-800 space-y-0.5">
-            <p><strong>TO:</strong> Priya Vance, Senior Data Compliance Officer</p>
-            <p><strong>FROM:</strong> Independent External Audit Team</p>
-            <p><strong>SUBJECT:</strong> Forensic XAI Model Review & Audit Findings</p>
-          </div>
-
-          <p className="font-serif text-sm text-slate-200">Executive Audit Summary:</p>
-          <p className="mt-1 font-serif text-xs leading-relaxed text-slate-300">
-            Our independent counterfactual audit compared rejected qualified loan applicants with approved peers possessing identical financial numbers. We verified that FinTrust’s official rejection reasons served as ethical camouflage. The true systemic drivers uncovered by our XAI investigation are:
-          </p>
-
-          {/* Key Findings List */}
-          <ul className="my-3 space-y-2 rounded-md border border-slate-800 bg-slate-950/50 p-3.5">
-            {REPORT_BULLETS.map((bullet, idx) => (
-              <li
-                key={idx}
-                className="flex items-start gap-2.5 font-serif text-xs leading-relaxed text-slate-200"
-              >
-                <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-amber-400" />
-                <span>{bullet}</span>
-              </li>
-            ))}
-          </ul>
-
-          {/* Collapsible Original Letter */}
-          <div className="mb-4">
-            <button
-              type="button"
-              onClick={() => setShowOriginalLetter(!showOriginalLetter)}
-              className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-amber-200 transition cursor-pointer"
-            >
-              {showOriginalLetter ? (
-                <ChevronUp className="h-3.5 w-3.5 text-amber-400" />
-              ) : (
-                <ChevronDown className="h-3.5 w-3.5 text-slate-500" />
-              )}
-              <span>{showOriginalLetter ? 'Hide original rejection notice' : 'View FinTrust’s original rejection notice (for comparison)'}</span>
-            </button>
-
-            {showOriginalLetter && (
-              <pre className="mt-2 whitespace-pre-wrap rounded-md border border-slate-800 bg-slate-950/70 p-3 font-serif text-[11px] leading-relaxed text-slate-400">
-                {REPORT_OFFICIAL_EXPLANATION}
-              </pre>
-            )}
-          </div>
-
-          {/* Verified Evidence Chain */}
-          <div className="border-t border-slate-800/80 pt-3">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-emerald-400">
-              Verified Primary Evidence Chain ({citedEvidences.length} items):
-            </p>
-            <div className="grid gap-1.5 sm:grid-cols-2">
-              {citedEvidences.map((ev) => (
-                <div
-                  key={ev.id}
-                  className="flex items-center justify-between rounded border border-emerald-500/20 bg-emerald-500/5 px-2.5 py-1.5 text-xs"
-                >
-                  <div className="flex items-center gap-1.5 truncate">
-                    <span className="rounded bg-emerald-500/20 px-1 py-0.2 font-mono text-[9px] font-bold text-emerald-300">
-                      #{ev.id}
-                    </span>
-                    <span className="truncate font-medium text-slate-200 text-[11px]">{ev.title}</span>
-                  </div>
-                  <Check className="h-3.5 w-3.5 flex-shrink-0 text-emerald-400 ml-1" />
+          {/* Email Content Area */}
+          <div className="bg-slate-900/50 p-6 sm:p-8">
+            {/* Email Metadata Header (TO / FROM / SUBJECT) */}
+            <div className="mb-8 space-y-3 border-b border-slate-800 pb-6 text-sm">
+              <div className="flex items-baseline gap-4">
+                <span className="w-16 font-mono font-bold text-slate-500 uppercase text-[10px] tracking-wider">To</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-semibold text-slate-100">Priya Vance</span>
+                  <span className="text-slate-500 text-xs">&lt;p.vance@fintrust.ai&gt;</span>
                 </div>
-              ))}
+              </div>
+
+              <div className="flex items-baseline gap-4">
+                <span className="w-16 font-mono font-bold text-slate-500 uppercase text-[10px] tracking-wider">From</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-semibold text-amber-200">Independent Audit Team</span>
+                  <span className="text-slate-500 text-xs">&lt;auditor-external@xai-unit.org&gt;</span>
+                </div>
+              </div>
+
+              <div className="flex items-baseline gap-4 pt-1">
+                <span className="w-16 font-mono font-bold text-slate-500 uppercase text-[10px] tracking-wider">Subject</span>
+                <span className="font-bold text-slate-100 italic">
+                  Forensic XAI Model Review & Audit Findings
+                </span>
+              </div>
+            </div>
+
+            {/* Email Body */}
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-widest text-amber-400/80 mb-3">
+                  Executive Summary
+                </h3>
+                <p className="text-sm leading-relaxed text-slate-300 font-sans">
+                  Our independent counterfactual audit compared rejected qualified loan applicants with approved peers possessing identical financial numbers. We verified that FinTrust’s official rejection reasons served as ethical camouflage. The true systemic drivers uncovered by our XAI investigation are:
+                </p>
+              </div>
+
+              {/* Key Findings List formatted as Email Bullet Points */}
+              <div className="space-y-4 py-2">
+                {REPORT_BULLETS.map((bullet, idx) => (
+                  <div key={idx} className="flex items-start gap-4 group">
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-slate-800 border border-slate-700 text-amber-400 font-mono text-[10px] font-bold transition-colors group-hover:border-amber-500/30 group-hover:bg-amber-500/5">
+                      {idx + 1}
+                    </div>
+                    <p className="text-sm text-slate-200 leading-relaxed font-sans pt-0.5">
+                      {bullet}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {/* Original Letter Toggle */}
+              <div className="pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowOriginalLetter(!showOriginalLetter)}
+                  className="flex items-center gap-2 rounded-md bg-slate-800/50 px-3 py-1.5 text-[11px] text-slate-400 hover:bg-slate-800 hover:text-amber-200 transition cursor-pointer border border-slate-700/50"
+                >
+                  {showOriginalLetter ? (
+                    <ChevronUp className="h-3.5 w-3.5" />
+                  ) : (
+                    <ChevronDown className="h-3.5 w-3.5" />
+                  )}
+                  <span>{showOriginalLetter ? 'Hide Original Rejection Notice' : 'Compare with FinTrust Original Rejection Notice'}</span>
+                </button>
+
+                <AnimatePresence>
+                  {showOriginalLetter && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden"
+                    >
+                      <pre className="mt-4 whitespace-pre-wrap rounded-lg border border-slate-800 bg-slate-950 p-4 font-serif text-[11px] leading-relaxed text-slate-500 italic">
+                        {REPORT_OFFICIAL_EXPLANATION}
+                      </pre>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
+              {/* Verified Evidence Footer */}
+              <div className="mt-8 border-t border-slate-800 pt-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <ShieldCheck className="h-4 w-4 text-emerald-500" />
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500/80">
+                    Verified Evidence Chain ({citedEvidences.length} Artifacts)
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  {citedEvidences.map((ev) => (
+                    <div
+                      key={ev.id}
+                      className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1 text-[10px] font-medium text-slate-300"
+                    >
+                      <span className="font-mono font-bold text-emerald-400">#{ev.id}</span>
+                      <span>{ev.title}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
