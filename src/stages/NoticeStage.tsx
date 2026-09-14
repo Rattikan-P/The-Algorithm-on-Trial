@@ -187,13 +187,13 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
               {/* Header */}
               <div className="bg-slate-950/50 px-6 py-5 border-b border-slate-800">
                 <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-amber-500 font-mono text-xs tracking-widest uppercase">Mission Briefing</span>
+                  <span className="text-amber-500 font-mono text-xs tracking-[0.2em] uppercase font-bold">Mission Briefing</span>
                   <span className="text-slate-500 font-mono text-xs flex items-center gap-1">
                     <ShieldAlert className="h-3 w-3 text-rose-500" />
                     CONFIDENTIAL
                   </span>
                 </div>
-                <h1 className="text-xl font-bold text-slate-100 font-sans">The Algorithm on Trial</h1>
+                <h1 className="text-2xl font-black text-slate-100 font-display tracking-widest uppercase">The Algorithm on Trial</h1>
               </div>
 
               {/* Body: Sectioned Content */}
@@ -205,8 +205,8 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
                     <BrainCircuit className="h-4 w-4 text-rose-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-slate-200 mb-1">1. The Incident</h3>
-                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                    <h3 className="text-base font-bold text-slate-200 mb-1 font-display uppercase tracking-wider">1. The Incident</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-serif">
                       FinTrust's automated loan-approval system has begun rejecting qualified applicants unexpectedly. The exact internal mechanism behind these rejections remains unverified.
                     </p>
                   </div>
@@ -218,9 +218,9 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
                     <Cpu className="h-4 w-4 text-slate-300" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-slate-200 mb-1">2. The Barrier: The "Black Box"</h3>
-                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                      Management maintains that the algorithm functions as a complex <strong className="text-slate-200">"Black Box"</strong>, claiming its inner workings cannot be easily audited or explained.
+                    <h3 className="text-base font-bold text-slate-200 mb-1 font-display uppercase tracking-wider">2. The Barrier: The "Black Box"</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-serif">
+                      Management maintains that the algorithm functions as a complex <strong className="text-slate-200 font-sans">"Black Box"</strong>, claiming its inner workings cannot be easily audited or explained.
                     </p>
                   </div>
                 </section>
@@ -231,9 +231,9 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
                     <SearchCode className="h-4 w-4 text-emerald-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-emerald-400 mb-1">3. The Methodology: Explainable AI (XAI)</h3>
-                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
-                      As an independent auditor, you will apply <strong className="text-emerald-300">Explainable AI (XAI)</strong> principles to inspect feature importance, analyze model decisions, and pierce through the black box.
+                    <h3 className="text-base font-bold text-emerald-400 mb-1 font-display uppercase tracking-wider">3. The Methodology: XAI</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-serif">
+                      As an independent auditor, you will apply <strong className="text-emerald-300 font-sans">Explainable AI (XAI)</strong> principles to inspect feature importance, analyze model decisions, and pierce through the black box.
                     </p>
                   </div>
                 </section>
@@ -244,8 +244,8 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
                     <FileSearch className="h-4 w-4 text-amber-400" />
                   </div>
                   <div>
-                    <h3 className="text-base font-semibold text-slate-200 mb-1">4. Your Objective</h3>
-                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                    <h3 className="text-base font-bold text-slate-200 mb-1 font-display uppercase tracking-wider">4. Your Objective</h3>
+                    <p className="text-xs sm:text-sm text-slate-400 leading-relaxed font-serif">
                       Gather physical clues, examine audit reports, and uncover the true factors driving the algorithm's verdicts to determine whether the system operates fairly.
                     </p>
                   </div>

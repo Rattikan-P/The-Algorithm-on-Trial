@@ -1110,9 +1110,9 @@ export const InvestigationStage: React.FC<InvestigationStageProps> = ({
       {/* Top Header */}
       <div className="mx-auto mb-6 flex max-w-5xl items-center justify-between">
         <div>
-          <h2 className="font-serif text-2xl text-amber-100">The Midnight Office</h2>
-          <p className="text-xs text-slate-400">
-            Switch rooms to hunt for evidence — look for glimmers
+          <h2 className="font-display text-2xl text-amber-100 uppercase tracking-wider">FinTrust HQ: Infiltration</h2>
+          <p className="text-xs text-slate-400 font-serif">
+            Switch rooms to hunt for evidence — look for glimmers of hidden truth.
           </p>
         </div>
         <div className="flex items-center gap-4">

@@ -51,8 +51,8 @@ export const Modal: React.FC<ModalProps> = ({
           >
             <div className="sticky top-0 z-10 flex items-start justify-between gap-4 border-b border-amber-500/20 bg-slate-900/95 px-5 py-4 backdrop-blur">
               <div>
-                <h3 className="font-serif text-lg text-amber-200">{title}</h3>
-                {subtitle && <p className="mt-0.5 text-xs text-slate-400">{subtitle}</p>}
+                <h3 className="font-display text-lg text-amber-200 uppercase tracking-wider">{title}</h3>
+                {subtitle && <p className="mt-0.5 text-xs text-slate-400 font-mono tracking-tight">{subtitle}</p>}
               </div>
               <button
                 type="button"

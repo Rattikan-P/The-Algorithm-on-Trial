@@ -493,7 +493,7 @@ export const ReportStage: React.FC<ReportStageProps> = ({
                   Audit Session #{sessionId}
                 </span>
               </div>
-              <h2 className="font-serif text-2xl sm:text-3xl font-bold text-amber-100 mt-1">
+              <h2 className="font-display text-2xl sm:text-3xl font-bold text-amber-100 mt-1 uppercase tracking-wider">
                 Final Investigation Audit Report
               </h2>
             </div>
