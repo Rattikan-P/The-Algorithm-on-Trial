@@ -78,7 +78,7 @@ const LobbyRoom: React.FC<{
 
   return (
     <>
-      <RoomCanvas image={IMAGES.lobby} alt="The FinTrust building lobby at midnight">
+      <RoomCanvas image={IMAGES.lobby} alt="The FinTrust AI Building Lobby at Midnight. A security guard is seen sleeping at the desk.">
         <ClueMarker
           icon={Award}
           label="Company plaque"
@@ -210,14 +210,14 @@ const LobbyRoom: React.FC<{
               loc: 'LOBBY',
               time: '23:38:12',
               img: IMAGES.cctvLobby,
-              scene: 'A man in a suit carrying a tablet steps into the elevator',
+              scene: 'Unauthorized Entry: VP Aldridge detected entering the elevator. He appears to be carrying the master encryption keys.',
             },
             {
               cam: 'CAM-04',
               loc: 'VP FLOOR',
               time: '23:41:03',
               img: IMAGES.cctvVp,
-              scene: 'Lights come on in the VP’s office',
+              scene: 'Security Alert: VP Aldridge entering private suite. Server logs indicate manual data scrubbing initiated.',
             },
           ].map((feed) => (
             <div

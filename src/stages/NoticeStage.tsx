@@ -23,11 +23,11 @@ interface NoticeStageProps {
 }
 
 const DIALOGUE_LINES = [
-  { sender: 'system', text: 'SYSTEM CONNECTION INITIALIZED. ID: AUDIT-FINTRUST-902.' },
-  { sender: 'priya', text: 'External auditor? This is Priya Vance, Senior Data Compliance Officer at FinTrust.' },
-  { sender: 'priya', text: 'We have retained your firm under confidential directive to review our automated credit-scoring model.' },
-  { sender: 'priya', text: 'Internal operations have flagged anomalous rejection rates for fully qualified loan applicants. However, management insists the automated system is a complex "Black Box" that cannot be audited.' },
-  { sender: 'priya', text: 'We require an independent technical audit utilizing Explainable AI (XAI) methodologies to examine the model parameters and verify its decision integrity.' },
+  { sender: 'system', text: 'ENCRYPTED CONNECTION ESTABLISHED. CHANNEL: OMEGA-6.' },
+  { sender: 'priya', text: 'Are you there? This is Priya. I’m bypassing the main FinTrust server to talk to you.' },
+  { sender: 'priya', text: 'Management has officially blocked the audit. They’re calling it a "Black Box" to hide the truth, but the rejection rates are purely discriminatory.' },
+  { sender: 'priya', text: 'The Series C funding round closes in 24 hours, and they’re launching the new AI model at dawn. They’ll do anything to keep the data clean until the check clears.' },
+  { sender: 'priya', text: 'I’ve left the back entrance unlocked for tonight. If we don’t find the raw model logs now, they’ll scrub the evidence and ship the bias worldwide.' },
 ];
 
 export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {

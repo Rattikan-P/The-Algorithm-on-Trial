@@ -16,6 +16,15 @@ import evidencePhoneCallImg from '../assets/images/evidence_phone_call_178928326
 import evidencePrDraftImg from '../assets/images/evidence_pr_draft_1789283285364.jpg';
 import evidenceModelServerImg from '../assets/images/evidence_model_server_1789283299006.jpg';
 
+import lobbyImg from '../assets/images/fintrust_lobby_sleeping_guard_1789359362651.jpg';
+import priyaImg from '../assets/images/priya_desk_representation_1789354141267.jpg';
+import serverRoomImg from '../assets/images/server_room_empty_noir_1789354155553.jpg';
+import vpOfficeImg from '../assets/images/vp_office_empty_noir_1789354167398.jpg';
+import analystImg from '../assets/images/case_analyst_abstract_profile_1789354179396.jpg';
+
+import cctvLobbyIntruderImg from '../assets/images/fintrust_cctv_sleeping_guard_1789359377307.jpg';
+import cctvVpIntruderImg from '../assets/images/cctv_vp_surveillance_angle_1789354875622.jpg';
+
 export const PRETEST_URL = 'https://forms.gle/pGpquvpVPTtF5rfE8';
 export const POSTTEST_URL = 'https://forms.gle/z43P4SC8RJJNnCdq5';
 
@@ -163,13 +172,13 @@ export const INVENTORY_ITEMS: Record<string, InventoryItem> = {
 };
 
 export const IMAGES = {
-  lobby: 'https://media.base44.com/images/public/6a58d3ad7d7a91ba37b4a548/83d270f7a_generated_image.png',
-  priya: 'https://media.base44.com/images/public/6a58d3ad7d7a91ba37b4a548/03df115fa_generated_image.png',
-  server: 'https://media.base44.com/images/public/6a58d3ad7d7a91ba37b4a548/d731a482d_generated_image.png',
-  vp: 'https://media.base44.com/images/public/6a58d3ad7d7a91ba37b4a548/cf5168379_generated_image.png',
-  analyst: 'https://media.base44.com/images/public/6a58d3ad7d7a91ba37b4a548/b829219ff_generated_image.png',
-  cctvLobby: 'https://media.base44.com/images/public/6a58d3ad7d7a91ba37b4a548/934f27142_generated_image.png',
-  cctvVp: 'https://media.base44.com/images/public/6a58d3ad7d7a91ba37b4a548/be7f4ea6f_generated_image.png',
+  lobby: lobbyImg,
+  priya: priyaImg,
+  server: serverRoomImg,
+  vp: vpOfficeImg,
+  analyst: analystImg,
+  cctvLobby: cctvLobbyIntruderImg,
+  cctvVp: cctvVpIntruderImg,
 };
 
 export const PHONE_INTERVIEW_QUESTIONS = [
