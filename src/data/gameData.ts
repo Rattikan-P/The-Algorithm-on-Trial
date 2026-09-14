@@ -29,7 +29,7 @@ export const PRETEST_URL = 'https://forms.gle/pGpquvpVPTtF5rfE8';
 export const POSTTEST_URL = 'https://forms.gle/z43P4SC8RJJNnCdq5';
 
 export const CONSENT_NOTE =
-  'This game is part of the course 953420: Ethics and Professionalism for Software Engineers. Participation is voluntary, no personally identifying information is collected, and you may stop playing at any time without penalty.';
+  'Notice: This platform logs anonymous gameplay interactions and test results for academic research purposes (Course 953420: Ethics and Professionalism for Software Engineers). By proceeding, you provide informed consent for your data to be collected anonymously. No personally identifying information is stored.';
 
 export const REJECTION_LETTER_TEXT = `Dear Applicant,
 Following our risk assessment, your loan application did not meet our approval criteria. This decision was based on multiple financial factors and cannot be attributed to any specific reason.

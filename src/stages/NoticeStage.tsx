@@ -39,6 +39,7 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
   });
   const [confirmedSubmitted, setConfirmedSubmitted] = useState<boolean>(false);
   const [showPretestModal, setShowPretestModal] = useState<boolean>(false);
+  const [isConsentChecked, setIsConsentChecked] = useState<boolean>(false);
   
   // Dialogue state
   const [dialogueIndex, setDialogueIndex] = useState(0);
@@ -87,6 +88,7 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
       setShowPretestModal(true);
       return;
     }
+    if (!isConsentChecked) return;
     onBegin();
   };
 
@@ -251,17 +253,39 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
                   </div>
                 </section>
 
+                {/* Section 5: Data Privacy & Informed Consent */}
+                <section className="flex gap-3.5 items-start rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-3">
+                  <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-indigo-500/10 border border-indigo-500/20">
+                    <ShieldAlert className="h-4 w-4 text-indigo-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-base font-bold text-indigo-300 mb-1 font-display uppercase tracking-wider">5. Privacy & Data Consent</h3>
+                    <p className="text-[11px] sm:text-xs text-indigo-200/70 leading-relaxed font-sans">
+                      This platform logs anonymous gameplay data and test results for academic research (953420). By clicking "Accept Mission", you provide <strong className="text-indigo-300 underline underline-offset-2">informed consent</strong> for this anonymous data collection.
+                    </p>
+                  </div>
+                </section>
+
               </div>
 
               {/* Footer / Call to action */}
               <div className="bg-slate-950/80 px-6 py-5 border-t border-slate-800 flex flex-col items-center">
-                <p className="mb-5 text-center text-xs text-slate-400 leading-normal">
-                  {CONSENT_NOTE}
-                </p>
+                <label className="mb-5 flex items-start gap-3 rounded bg-indigo-500/5 p-3 cursor-pointer border border-indigo-500/20 hover:border-indigo-500/40 transition group/consent">
+                  <input
+                    type="checkbox"
+                    checked={isConsentChecked}
+                    onChange={(e) => setIsConsentChecked(e.target.checked)}
+                    className="mt-1 h-4 w-4 rounded border-slate-600 bg-slate-900 text-indigo-500 focus:ring-indigo-500/20 cursor-pointer"
+                  />
+                  <span className="text-[11px] text-indigo-200/80 leading-normal font-sans group-hover/consent:text-indigo-200 transition-colors">
+                    I have read and understood the privacy notice. I provide <strong className="text-indigo-300">informed consent</strong> for the collection of my anonymous gameplay interactions and test results for academic research purposes.
+                  </span>
+                </label>
                 
                 <button
                   onClick={handleStartGame}
-                  className="group relative flex w-full max-w-xs items-center justify-center gap-2 overflow-hidden rounded-md bg-amber-500 px-5 py-3 font-bold text-slate-950 transition-all hover:bg-amber-400 hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] cursor-pointer text-sm"
+                  disabled={!isConsentChecked}
+                  className="group relative flex w-full max-w-xs items-center justify-center gap-2 overflow-hidden rounded-md bg-amber-500 px-5 py-3 font-bold text-slate-950 transition-all enabled:hover:bg-amber-400 enabled:hover:shadow-[0_0_20px_rgba(245,158,11,0.3)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer text-sm"
                 >
                   <span className="relative z-10 uppercase tracking-wider">Accept Mission</span>
                   <ArrowRight className="relative z-10 h-4 w-4 transition-transform group-hover:translate-x-1" />
