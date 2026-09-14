@@ -76,13 +76,13 @@ const CaseAnalystBanner: React.FC<{
     >
       <div className="mx-auto flex max-w-4xl items-stretch gap-4 px-4 py-4">
         {/* Analyst Portrait */}
-        <div className="relative hidden h-28 w-24 flex-shrink-0 overflow-hidden rounded-md border border-emerald-500/30 sm:block">
+        <div className="relative hidden h-28 w-24 flex-shrink-0 overflow-hidden rounded-lg border border-emerald-500/40 bg-slate-900 shadow-inner sm:block">
           <img
             src={IMAGES.analyst}
             alt="Case Analyst"
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-top"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent pointer-events-none" />
         </div>
 
         {/* Narrative Box with Click to Skip */}

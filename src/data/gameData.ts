@@ -20,7 +20,7 @@ import lobbyImg from '../assets/images/fintrust_lobby_sleeping_guard_17893593626
 import priyaImg from '../assets/images/priya_desk_representation_1789354141267.jpg';
 import serverRoomImg from '../assets/images/server_room_empty_noir_1789354155553.jpg';
 import vpOfficeImg from '../assets/images/vp_office_empty_noir_1789354167398.jpg';
-import analystImg from '../assets/images/case_analyst_abstract_profile_1789354179396.jpg';
+import analystImg from '../assets/images/case_analyst_human_1789394178332.jpg';
 
 import cctvLobbyIntruderImg from '../assets/images/fintrust_cctv_sleeping_guard_1789359377307.jpg';
 import cctvVpIntruderImg from '../assets/images/cctv_vp_surveillance_angle_1789354875622.jpg';

@@ -45,6 +45,19 @@ export function saveSession(session: SessionLog): void {
   }
 }
 
+export function resetStageTimer(stageName: GameStage): void {
+  const session = getCurrentSession();
+  if (!session) return;
+  const now = Date.now();
+  if (!session.stages[stageName]) {
+    session.stages[stageName] = { enteredAt: now };
+  } else {
+    session.stages[stageName].enteredAt = now;
+    session.stages[stageName].durationMs = 0;
+  }
+  saveSession(session);
+}
+
 export function recordStageTransition(toStage: GameStage, meta: Record<string, unknown> = {}): void {
   const session = getCurrentSession();
   if (!session) return;
@@ -203,13 +216,16 @@ export function calculateVerdictCoherence(
 }
 
 export function getDetectiveRank(score: number): { label: string; color: string } {
-  if (score >= 160) {
-    return { label: 'Legendary Detective', color: 'text-amber-300' };
+  if (score >= 153) {
+    return { label: 'Master Fairness Auditor', color: 'text-amber-300' };
   }
-  if (score >= 100) {
-    return { label: 'Master Detective', color: 'text-amber-200' };
+  if (score >= 102) {
+    return { label: 'Senior Investigator', color: 'text-amber-200' };
   }
-  return { label: 'Rookie Detective', color: 'text-slate-300' };
+  if (score >= 51) {
+    return { label: 'Field Auditor', color: 'text-emerald-300' };
+  }
+  return { label: 'Rookie Auditor', color: 'text-slate-400' };
 }
 
 export function caesarShift(text: string, shift: number): string {

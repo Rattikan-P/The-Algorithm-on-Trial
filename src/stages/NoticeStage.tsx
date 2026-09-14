@@ -17,6 +17,7 @@ import {
   PRETEST_URL,
   CONSENT_NOTE,
 } from '../data/gameData';
+import { resetStageTimer } from '../utils/session';
 
 interface NoticeStageProps {
   onBegin: () => void;
@@ -64,11 +65,13 @@ export const NoticeStage: React.FC<NoticeStageProps> = ({ onBegin }) => {
       setDialogueIndex(prev => prev + 1);
     } else {
       setShowDossier(true);
+      resetStageTimer('notice');
     }
   };
 
   const handleSkipDialogue = () => {
     setShowDossier(true);
+    resetStageTimer('notice');
   };
 
   const handleOpenPretest = () => {
