@@ -1071,7 +1071,28 @@ export const InvestigationStage: React.FC<InvestigationStageProps> = ({
   const [currentRoom, setCurrentRoom] = useState<RoomId>('lobby');
   const [journalOpen, setJournalOpen] = useState(false);
   const [latestToastId, setLatestToastId] = useState<number | null>(null);
+  const [itemToastMessage, setItemToastMessage] = useState<string | null>(null);
   const [discoveredPoints, setDiscoveredPoints] = useState<Set<string>>(new Set());
+
+  const handleAddItem = (itemId: string) => {
+    addItem(itemId);
+    if (itemId === 'brassKey') {
+      setItemToastMessage('Brass Key acquired');
+    } else if (itemId === 'accessCard') {
+      setItemToastMessage('Access Card acquired');
+    } else {
+      setItemToastMessage('Item acquired');
+    }
+  };
+
+  // Auto-dismiss item notification after 3.5 seconds
+  React.useEffect(() => {
+    if (!itemToastMessage) return;
+    const timer = setTimeout(() => {
+      setItemToastMessage(null);
+    }, 3500);
+    return () => clearTimeout(timer);
+  }, [itemToastMessage]);
 
   const handleInspectPoint = (pointId: string) => {
     setDiscoveredPoints((prev) => new Set(prev).add(pointId));
@@ -1187,7 +1208,7 @@ export const InvestigationStage: React.FC<InvestigationStageProps> = ({
         <>
           {currentRoom === 'lobby' && (
             <LobbyRoom
-              addItem={addItem}
+              addItem={handleAddItem}
               addNote={addNote}
               addBonus={addBonus}
               hasAccessCard={hasAccessCard}
@@ -1203,7 +1224,7 @@ export const InvestigationStage: React.FC<InvestigationStageProps> = ({
               setHasKey={setHasKey}
               pcUnlocked={pcUnlocked}
               setPcUnlocked={setPcUnlocked}
-              addItem={addItem}
+              addItem={handleAddItem}
               addNote={addNote}
               addBonus={addBonus}
               discoveredPoints={discoveredPoints}
@@ -1232,6 +1253,16 @@ export const InvestigationStage: React.FC<InvestigationStageProps> = ({
             />
           )}
         </>
+      )}
+
+      {/* Plain white text item collected notification (top-right corner, no background, thematic font) */}
+      {itemToastMessage && (
+        <div
+          id="item-collected-toast"
+          className="pointer-events-none fixed top-6 right-6 z-50 text-right font-mono text-xs uppercase tracking-widest text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)] transition-opacity duration-300 select-none"
+        >
+          [+] {itemToastMessage}
+        </div>
       )}
 
       {/* Floating Evidence Discovery Toast Notification */}
